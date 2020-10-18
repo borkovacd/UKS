@@ -9,9 +9,7 @@ class Project(models.Model):
     git_repository = models.CharField(max_length=100)
     date_created = models.DateTimeField(default = timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
-
-    #collaborators = models.ManyToManyField(User, related_name='collaborations')
-
+    collaborators = models.ManyToManyField(User, related_name='collaborations')
 
     def __str__(self):
         return self.title
