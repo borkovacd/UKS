@@ -19,6 +19,11 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from users  import views as user_views
+from project.views import ( ProjectListView, 
+                            ProjectDetailView, 
+                            ProjectCreateView, 
+                            ProjectUpdateView, 
+                            ProjectDeleteView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,7 +31,13 @@ urlpatterns = [
     path('profile/', user_views.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
-    path('', user_views.home, name='home'),
+    path('projects', ProjectListView.as_view(), name='home'),
+    path('', ProjectListView.as_view(), name='home'),
+    path('project/<int:pk>/', ProjectDetailView.as_view(), name='project-detail'),
+    path('project/new/', ProjectCreateView.as_view(), name='project-create'),
+    path('project/<int:pk>/update/', ProjectUpdateView.as_view(), name='project-update'),
+    path('project/<int:pk>/delete/', ProjectDeleteView.as_view(), name='project-delete')
+
 ]
 
 if settings.DEBUG:

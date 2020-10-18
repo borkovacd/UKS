@@ -1,0 +1,12 @@
+{% extends "project/base.html" %}
+{% block content %}
+    {% for project in projects %}
+        <article class="media content-section">
+          <!--<img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+          <div class="media-body">
+            <h2><a class="article-title" href="{% url 'project-detail' project.id %}">{{ project.title }}</a></h2>
+            <a class="article-title" href="{{ project.git_repository }}">{{ project.git_repository }}</a>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
