@@ -23,7 +23,11 @@ from project.views import ( ProjectListView,
                             ProjectDetailView, 
                             ProjectCreateView, 
                             ProjectUpdateView, 
-                            ProjectDeleteView)
+                            ProjectDeleteView,
+                            ProblemCreateView,
+                            ProblemDetailView, 
+                            ProblemListView,
+                            ProblemDeleteView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,12 +35,22 @@ urlpatterns = [
     path('profile/', user_views.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+
     path('projects', ProjectListView.as_view(), name='home'),
     path('', ProjectListView.as_view(), name='home'),
     path('project/<int:pk>/', ProjectDetailView.as_view(), name='project-detail'),
     path('project/new/', ProjectCreateView.as_view(), name='project-create'),
     path('project/<int:pk>/update/', ProjectUpdateView.as_view(), name='project-update'),
-    path('project/<int:pk>/delete/', ProjectDeleteView.as_view(), name='project-delete')
+    path('project/<int:pk>/delete/', ProjectDeleteView.as_view(), name='project-delete'),
+
+    path('problem/new/', ProblemCreateView.as_view(), name='problem-create'),
+    path('problem/<int:pk>/', ProblemDetailView.as_view(), name='problem-detail'),
+    path('problems', ProblemListView.as_view(), name='problems'),
+    path('problem/<int:pk>/delete/', ProblemDeleteView.as_view(), name='problem-delete'),
+
+
+
+
 
 ]
 
