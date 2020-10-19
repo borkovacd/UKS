@@ -9,7 +9,8 @@ from django.views.generic import (
 )
 from .models import (   
                     Project, 
-                    Problem
+                    Problem,
+                    Label
                     )
 
 
@@ -94,3 +95,28 @@ class ProblemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False                
 
+
+# LABELS
+class LabelCreateView(LoginRequiredMixin, CreateView):
+    model = Label
+    fields = ['title', 'color']
+
+
+class LabelDetailView(DetailView):
+    model = Label        
+
+class LabelListView(ListView):
+    model = Label
+    template_name = 'project/labels.html'  # <app>/<model>_<viewtype>.html
+    context_object_name = 'labels'
+    ordering = ['title']
+
+class LabelDeleteView(LoginRequiredMixin, DeleteView):
+    model = Label
+    success_url = '/labels'
+
+
+class LabelUpdateView(LoginRequiredMixin, UpdateView):
+    model = Label
+    fields = ['title', 'color']
+              

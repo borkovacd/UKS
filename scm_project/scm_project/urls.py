@@ -24,10 +24,19 @@ from project.views import ( ProjectListView,
                             ProjectCreateView, 
                             ProjectUpdateView, 
                             ProjectDeleteView,
+                            
                             ProblemCreateView,
                             ProblemDetailView, 
                             ProblemListView,
-                            ProblemDeleteView)
+                            ProblemDeleteView,
+
+                            LabelCreateView,
+                            LabelDetailView,
+                            LabelListView,
+                            LabelUpdateView,
+                            LabelDeleteView
+
+                            )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -47,6 +56,12 @@ urlpatterns = [
     path('problem/<int:pk>/', ProblemDetailView.as_view(), name='problem-detail'),
     path('problems', ProblemListView.as_view(), name='problems'),
     path('problem/<int:pk>/delete/', ProblemDeleteView.as_view(), name='problem-delete'),
+
+    path('labels', LabelListView.as_view(), name='labels'),
+    path('label/<int:pk>/', LabelDetailView.as_view(), name='label-detail'),
+    path('label/new/', LabelCreateView.as_view(), name='label-create'),
+    path('label/<int:pk>/update/', LabelUpdateView.as_view(), name='label-update'),
+    path('label/<int:pk>/delete/', LabelDeleteView.as_view(), name='label-delete'),
 
 
 

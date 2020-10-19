@@ -1,0 +1,12 @@
+{% extends "project/base.html" %}
+{% block content %}
+    {% for label in labels %}
+        <article class="media content-section">
+          <div class="media-body">
+            <h5><a class="article-title" style="color: {{label.color}}" href="{% url 'label-detail' label.id %}">{{ label.title }}</a></h5>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
+
+

@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from enum import Enum
+from colorfield.fields import ColorField
+from colorful.fields import RGBColorField
 
 class Problem_State(Enum):
     OPEN = 1
@@ -36,3 +38,14 @@ class Problem(models.Model):
 
     def get_absolute_url(self):
         return reverse('problem-detail', kwargs={'pk': self.pk})
+
+
+class Label(models.Model):
+    title = models.CharField(max_length=100)
+    #color = ColorField(default='#FF0000')
+    color = RGBColorField()
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
+    problems = models.ManyToManyField(Problem, related_name='labels')
+
+    def get_absolute_url(self):
+        return reverse('label-detail', kwargs={'pk': self.pk})
