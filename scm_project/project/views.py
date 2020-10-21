@@ -7,8 +7,8 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import (   
-                    Project, 
+from .models import (
+                    Project,
                     Problem
                     )
 
@@ -27,7 +27,7 @@ class ProjectListView(ListView):
     ordering = ['title']
 
 class ProjectDetailView(DetailView):
-    model = Project  
+    model = Project
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
@@ -35,7 +35,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        return super().form_valid(form) 
+        return super().form_valid(form)
 
 
 
@@ -51,7 +51,7 @@ class ProjectUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         project = self.get_object()
         if self.request.user == project.author:
             return True
-        return False 
+        return False
 
 
 class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -62,21 +62,21 @@ class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         project = self.get_object()
         if self.request.user == project.author:
             return True
-        return False                
+        return False
 
 
-# PROBLEMS 
+# PROBLEMS
 class ProblemCreateView(LoginRequiredMixin, CreateView):
     model = Problem
     fields = ['title', 'description']
 
     def form_valid(self, form):
         form.instance.reported_by = self.request.user
-        return super().form_valid(form) 
+        return super().form_valid(form)
 
 
 class ProblemDetailView(DetailView):
-    model = Problem        
+    model = Problem
 
 class ProblemListView(ListView):
     model = Problem
@@ -92,5 +92,16 @@ class ProblemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         project = self.get_object()
         if self.request.user == project.reported_by:
             return True
-        return False                
+        return False
 
+
+
+# COLLABORATORS
+class AddCollaboratorView(LoginRequiredMixin, CreateView):
+    model = Project
+    fields = ['collaborators']
+    template_name = 'project/add_collaborator.html'
+
+    def form_valid(self, form):
+        form.instance.username = self.request.user
+        return super().form_valid(form)

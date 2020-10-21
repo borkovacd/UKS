@@ -19,15 +19,16 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from users  import views as user_views
-from project.views import ( ProjectListView, 
-                            ProjectDetailView, 
-                            ProjectCreateView, 
-                            ProjectUpdateView, 
+from project.views import ( ProjectListView,
+                            ProjectDetailView,
+                            ProjectCreateView,
+                            ProjectUpdateView,
                             ProjectDeleteView,
                             ProblemCreateView,
-                            ProblemDetailView, 
+                            ProblemDetailView,
                             ProblemListView,
-                            ProblemDeleteView)
+                            ProblemDeleteView,
+                            AddCollaboratorView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -47,6 +48,8 @@ urlpatterns = [
     path('problem/<int:pk>/', ProblemDetailView.as_view(), name='problem-detail'),
     path('problems', ProblemListView.as_view(), name='problems'),
     path('problem/<int:pk>/delete/', ProblemDeleteView.as_view(), name='problem-delete'),
+
+    path('project/<int:pk>/collaborate/', AddCollaboratorView.as_view(), name='project-collaborate'),
 
 
 
