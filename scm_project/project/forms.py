@@ -10,7 +10,7 @@ from bootstrap_datepicker_plus import DatePickerInput
 class MilestoneForm(forms.ModelForm):
     class Meta:
         model = Milestone
-        fields = ['title', 'description', 'due_date']
+        fields = ['title', 'description', 'due_date', 'project']
         widgets = {
             'due_date': DateInput(attrs={'type': 'date'})
         }

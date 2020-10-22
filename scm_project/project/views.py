@@ -40,6 +40,13 @@ class ProjectListView(ListView):
 class ProjectDetailView(DetailView):
     model = Project  
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['labels'] = Label.objects.filter(project_id=self.object)
+        context['milestones'] = Milestone.objects.filter(project_id = self.object)
+        context['problems'] = Problem.objects.filter(project_id = self.object)
+        return context
+
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     fields = ['title', 'git_repository']
@@ -128,7 +135,7 @@ class LabelDeleteView(LoginRequiredMixin, DeleteView):
 
 class LabelUpdateView(LoginRequiredMixin, UpdateView):
     model = Label
-    fields = ['title', 'color']
+    fields = ['title', 'color', 'project']
 
 # MILESTONES    
 class MilestoneListView(ListView):

@@ -34,19 +34,13 @@ class Problem(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
     reported_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created_time = models.DateTimeField(default = timezone.now, null=True)
-    # rekurzija
     base_problem = models.ForeignKey('self', related_name='problem', on_delete=models.CASCADE, null=True, blank=True)
-    #linked_milestone = models.ForeignKey(Milestone, on_delete=models.SET_NULL, null=True)
-    #current_assignee = models.ForeignKey(User, related_name='assigned', on_delete=models.SET_NULL, null=True)
-	# problem state
-
     def get_absolute_url(self):
         return reverse('problem-detail', kwargs={'pk': self.pk})
 
 
 class Label(models.Model):
     title = models.CharField(max_length=100)
-    #color = ColorField(default='#FF0000')
     color = RGBColorField()
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
     problems = models.ManyToManyField(Problem, related_name='labels')
