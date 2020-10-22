@@ -79,7 +79,7 @@ class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 # PROBLEMS 
 class ProblemCreateView(LoginRequiredMixin, CreateView):
     model = Problem
-    fields = ['title', 'description']
+    fields = ['title', 'description', 'project']
 
     def form_valid(self, form):
         form.instance.reported_by = self.request.user
@@ -109,7 +109,7 @@ class ProblemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 # LABELS
 class LabelCreateView(LoginRequiredMixin, CreateView):
     model = Label
-    fields = ['title', 'color']
+    fields = ['title', 'color', 'project']
 
 
 class LabelDetailView(DetailView):

@@ -14,7 +14,9 @@
         {% endif %}
       </div>
       <h2 class="article-title">{{ object.title }}</h2>
-      <a class="article-title" href="{{ object.description }}">{{ object.description }}</a>
+      <h5 class="article-title">{{ object.description }}</h5>
+      <h2 class="article-title">{{ object.project.title }}</h2>
+
     </div>
   </article>
 {% endblock content %}
