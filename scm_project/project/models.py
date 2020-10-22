@@ -5,6 +5,10 @@ from django.urls import reverse
 from enum import Enum
 from colorfield.fields import ColorField
 from colorful.fields import RGBColorField
+from functools import partial
+from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput, DateTimePickerInput, MonthPickerInput, YearPickerInput
+#DateInput = partial(models.DateInput, {'class': 'datepicker'})
+from django import forms
 
 class Problem_State(Enum):
     OPEN = 1
@@ -49,3 +53,14 @@ class Label(models.Model):
 
     def get_absolute_url(self):
         return reverse('label-detail', kwargs={'pk': self.pk})
+
+
+class Milestone(models.Model):
+    title = models.CharField(max_length=100, null=True)
+    description = models.CharField(max_length=100, null=True, blank=True)
+    due_date = models.DateField(default = timezone.now)
+    date_created = models.DateTimeField(default = timezone.now)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)  
+
+    def get_absolute_url(self):
+        return reverse('milestone-detail', kwargs={'pk': self.pk})      

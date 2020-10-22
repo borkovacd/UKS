@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'colorfield',
-    'colorful'
+    'colorful',
+    'bootstrap_datepicker_plus',
+    'tempus_dominus',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
