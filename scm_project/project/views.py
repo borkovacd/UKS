@@ -13,20 +13,18 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-<<<<<<< HEAD
 from .models import (
                     Project,
-                    Problem
-=======
-from .models import (   
-                    Project, 
                     Problem,
-                    Label, 
-                    Milestone
->>>>>>> development
+                    Label,
+                    Milestone,
+                    Collaborator
                     )
 
 from .forms import MilestoneForm
+from django.contrib.auth.models import User
+
+
 class DateInput(forms.DateInput):
     input_type = 'date'
 
@@ -51,6 +49,7 @@ class ProjectDetailView(DetailView):
         context['labels'] = Label.objects.filter(project_id=self.object)
         context['milestones'] = Milestone.objects.filter(project_id = self.object)
         context['problems'] = Problem.objects.filter(project_id = self.object)
+        context['collaborators'] = Collaborator.objects.filter(project_id = self.object)
         return context
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
@@ -118,19 +117,6 @@ class ProblemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
-
-
-<<<<<<< HEAD
-# COLLABORATORS
-class AddCollaboratorView(LoginRequiredMixin, CreateView):
-    model = Project
-    fields = ['collaborators']
-    template_name = 'project/add_collaborator.html'
-
-    def form_valid(self, form):
-        form.instance.username = self.request.user
-        return super().form_valid(form)
-=======
 # LABELS
 class LabelCreateView(LoginRequiredMixin, CreateView):
     model = Label
@@ -138,7 +124,7 @@ class LabelCreateView(LoginRequiredMixin, CreateView):
 
 
 class LabelDetailView(DetailView):
-    model = Label        
+    model = Label
 
 class LabelListView(ListView):
     model = Label
@@ -155,7 +141,7 @@ class LabelUpdateView(LoginRequiredMixin, UpdateView):
     model = Label
     fields = ['title', 'color', 'project']
 
-# MILESTONES    
+# MILESTONES
 class MilestoneListView(ListView):
     model = Milestone
     template_name = 'project/milestones.html'  # <app>/<model>_<viewtype>.html
@@ -163,7 +149,7 @@ class MilestoneListView(ListView):
     ordering = ['title']
 
 class MilestoneDetailView(DetailView):
-    model = Milestone  
+    model = Milestone
 
 class MilestoneCreateView(LoginRequiredMixin, CreateView):
     model = Milestone
@@ -175,7 +161,26 @@ class MilestoneUpdateView(LoginRequiredMixin, UpdateView):
 
 class MilestoneDeleteView(LoginRequiredMixin, DeleteView):
     model = Milestone
-    success_url = '/milestones'             
+    success_url = '/milestones'
 
-              
->>>>>>> development
+
+# COLLABORATORS
+
+class AddCollaboratorView(LoginRequiredMixin, CreateView):
+    model = Collaborator
+    fields = ['user', 'project']
+
+class CollaboratorListView(ListView):
+    model = Collaborator
+    template_name = 'project/collaborators.html'
+    context_object_name = 'collaborators'
+
+class CollaboratorDetailView(DetailView):
+    model = Collaborator
+
+class CollaboratorDeleteView(LoginRequiredMixin, DeleteView):
+    model = Collaborator
+    success_url = '/collaborators'
+
+
+

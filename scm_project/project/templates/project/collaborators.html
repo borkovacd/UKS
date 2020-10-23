@@ -1,0 +1,17 @@
+{% extends "project/base.html" %}
+{% block content %}
+    {% for collaborator in collaborators %}
+        <article class="media content-section">
+          <!--<img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+          <div class="media-body">
+            <h2><a class="article-title" href="{% url 'collaborator-detail' collaborator.id %}">{{ collaborator.user.username }}</a></h2>
+          </div>
+        </article>
+       {% empty %}
+          <p>There are currently no collaborators reported with this filter</p>
+    {% endfor %}
+{% endblock content %}
+
+
+
+

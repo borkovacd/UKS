@@ -9,6 +9,7 @@ from functools import partial
 from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput, DateTimePickerInput, MonthPickerInput, YearPickerInput
 #DateInput = partial(models.DateInput, {'class': 'datepicker'})
 from django import forms
+from users.models import Profile
 
 class Problem_State(Enum):
     OPEN = 1
@@ -19,7 +20,7 @@ class Project(models.Model):
     git_repository = models.CharField(max_length=100)
     date_created = models.DateTimeField(default = timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null = True)
-    collaborators = models.ManyToManyField(User, related_name='collaborations')
+    #collaborators = models.ManyToManyField(User, related_name='collaborators')
 
     def __str__(self):
         return self.title
@@ -58,3 +59,10 @@ class Milestone(models.Model):
 
     def get_absolute_url(self):
         return reverse('milestone-detail', kwargs={'pk': self.pk})
+
+class Collaborator(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
+
+    def get_absolute_url(self):
+        return reverse('collaborator-detail', kwargs={'pk': self.pk})

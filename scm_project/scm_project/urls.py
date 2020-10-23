@@ -30,9 +30,6 @@ from project.views import ( ProjectListView,
                             ProblemListView,
                             ProblemDeleteView,
 
-                            AddCollaboratorView,
-
-
                             LabelCreateView,
                             LabelDetailView,
                             LabelListView,
@@ -45,6 +42,10 @@ from project.views import ( ProjectListView,
                             MilestoneUpdateView,
                             MilestoneDeleteView,
 
+                            CollaboratorListView,
+                            AddCollaboratorView,
+                            CollaboratorDetailView,
+                            CollaboratorDeleteView
                             )
 
 
@@ -67,8 +68,6 @@ urlpatterns = [
     path('problems', ProblemListView.as_view(), name='problems'),
     path('problem/<int:pk>/delete/', ProblemDeleteView.as_view(), name='problem-delete'),
 
-    path('project/<int:pk>/collaborate/', AddCollaboratorView.as_view(), name='project-collaborate'),
-
     path('labels', LabelListView.as_view(), name='labels'),
     path('label/<int:pk>/', LabelDetailView.as_view(), name='label-detail'),
     path('label/new/', LabelCreateView.as_view(), name='label-create'),
@@ -80,6 +79,12 @@ urlpatterns = [
     path('milestone/new/', MilestoneCreateView.as_view(), name='milestone-create'),
     path('milestone/<int:pk>/update/', MilestoneUpdateView.as_view(), name='milestone-update'),
     path('milestone/<int:pk>/delete/', MilestoneDeleteView.as_view(), name='milestone-delete'),
+
+    path('collaborators', CollaboratorListView.as_view(), name='collaborators'),
+    path('project/<int:pk>/collaborate/', AddCollaboratorView.as_view(), name='project-collaborate'),
+    #path('collaborator/add/', AddCollaboratorView.as_view(), name='collaborator-add'),
+    path('collaborator/<int:pk>/', CollaboratorDetailView.as_view(), name='collaborator-detail'),
+    path('collaborator/<int:pk>/delete/', CollaboratorDeleteView.as_view(), name='collaborator-delete'),
 
 
 ]
