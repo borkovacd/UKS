@@ -24,11 +24,29 @@ from project.views import ( ProjectListView,
                             ProjectCreateView,
                             ProjectUpdateView,
                             ProjectDeleteView,
+
                             ProblemCreateView,
                             ProblemDetailView,
                             ProblemListView,
                             ProblemDeleteView,
-                            AddCollaboratorView)
+
+                            AddCollaboratorView,
+
+
+                            LabelCreateView,
+                            LabelDetailView,
+                            LabelListView,
+                            LabelUpdateView,
+                            LabelDeleteView,
+
+                            MilestoneListView,
+                            MilestoneDetailView,
+                            MilestoneCreateView,
+                            MilestoneUpdateView,
+                            MilestoneDeleteView,
+
+                            )
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -51,8 +69,17 @@ urlpatterns = [
 
     path('project/<int:pk>/collaborate/', AddCollaboratorView.as_view(), name='project-collaborate'),
 
+    path('labels', LabelListView.as_view(), name='labels'),
+    path('label/<int:pk>/', LabelDetailView.as_view(), name='label-detail'),
+    path('label/new/', LabelCreateView.as_view(), name='label-create'),
+    path('label/<int:pk>/update/', LabelUpdateView.as_view(), name='label-update'),
+    path('label/<int:pk>/delete/', LabelDeleteView.as_view(), name='label-delete'),
 
-
+    path('milestones', MilestoneListView.as_view(), name='milestones'),
+    path('milestone/<int:pk>/', MilestoneDetailView.as_view(), name='milestone-detail'),
+    path('milestone/new/', MilestoneCreateView.as_view(), name='milestone-create'),
+    path('milestone/<int:pk>/update/', MilestoneUpdateView.as_view(), name='milestone-update'),
+    path('milestone/<int:pk>/delete/', MilestoneDeleteView.as_view(), name='milestone-delete'),
 
 
 ]
