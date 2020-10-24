@@ -18,6 +18,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from project.views import *
 from users  import views as user_views
 from project.views import ( ProjectListView,
                             ProjectDetailView,
@@ -67,6 +68,8 @@ urlpatterns = [
     path('problem/<int:pk>/', ProblemDetailView.as_view(), name='problem-detail'),
     path('problems', ProblemListView.as_view(), name='problems'),
     path('problem/<int:pk>/delete/', ProblemDeleteView.as_view(), name='problem-delete'),
+    path('problem/<int:problem_id>/close/', close_problem, name='close_problem'),
+    path('problem/<int:problem_id>/open/', open_problem, name='open_problem'),
 
     path('labels', LabelListView.as_view(), name='labels'),
     path('label/<int:pk>/', LabelDetailView.as_view(), name='label-detail'),
