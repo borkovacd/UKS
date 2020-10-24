@@ -65,7 +65,7 @@ class Milestone(models.Model):
 
 class Collaborator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null = True)
 
     def get_absolute_url(self):
         return reverse('collaborator-detail', kwargs={'pk': self.pk})
