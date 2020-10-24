@@ -21,8 +21,10 @@ from .models import (
                     Collaborator
                     )
 
-from .forms import MilestoneForm
+from .forms import MilestoneForm, AddCollaboratorForm
 from django.contrib.auth.models import User
+from django.contrib import messages
+
 
 
 class DateInput(forms.DateInput):
@@ -168,7 +170,19 @@ class MilestoneDeleteView(LoginRequiredMixin, DeleteView):
 
 class AddCollaboratorView(LoginRequiredMixin, CreateView):
     model = Collaborator
-    fields = ['user', 'project']
+    fields = ['user']
+
+def addCollaborator(request, pk):
+    form = AddCollaboratorForm(request.POST)
+    if form.is_valid():
+        new_collaborator = form.save(commit=False)
+        new_collaborator.project_id = pk;
+        new_collaborator.save()
+        messages.success(request, f'Add Collaborator to %s' %pk)
+    return render(request, 'project/collaborator_form.html', {'form': form})
+    #success da ode negde
+
+
 
 class CollaboratorListView(ListView):
     model = Collaborator

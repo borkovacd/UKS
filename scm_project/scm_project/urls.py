@@ -47,6 +47,7 @@ from project.views import ( ProjectListView,
                             CollaboratorDetailView,
                             CollaboratorDeleteView
                             )
+from project import views as project_views
 
 
 urlpatterns = [
@@ -81,7 +82,8 @@ urlpatterns = [
     path('milestone/<int:pk>/delete/', MilestoneDeleteView.as_view(), name='milestone-delete'),
 
     path('collaborators', CollaboratorListView.as_view(), name='collaborators'),
-    path('project/<int:pk>/collaborate/', AddCollaboratorView.as_view(), name='project-collaborate'),
+    #path('project/<int:pk>/collaborate/', AddCollaboratorView.as_view(), name='project-collaborate'),
+    path('project/<int:pk>/collaborate/', project_views.addCollaborator, name='project-collaborate'),
     #path('collaborator/add/', AddCollaboratorView.as_view(), name='collaborator-add'),
     path('collaborator/<int:pk>/', CollaboratorDetailView.as_view(), name='collaborator-detail'),
     path('collaborator/<int:pk>/delete/', CollaboratorDeleteView.as_view(), name='collaborator-delete'),
