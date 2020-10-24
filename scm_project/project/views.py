@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from bootstrap_datepicker_plus import DatePickerInput
 from django.forms.widgets import DateInput
@@ -168,21 +168,20 @@ class MilestoneDeleteView(LoginRequiredMixin, DeleteView):
 
 # COLLABORATORS
 
-class AddCollaboratorView(LoginRequiredMixin, CreateView):
-    model = Collaborator
-    fields = ['user']
+# class AddCollaboratorView(LoginRequiredMixin, CreateView):
+#     model = Collaborator
+#     fields = ['user']
 
 def addCollaborator(request, pk):
     form = AddCollaboratorForm(request.POST)
-    if form.is_valid():
-        new_collaborator = form.save(commit=False)
-        new_collaborator.project_id = pk;
-        new_collaborator.save()
-        messages.success(request, f'Add Collaborator to %s' %pk)
+    if request.method == 'POST':
+        if form.is_valid():
+            new_collaborator = form.save(commit=False)
+            new_collaborator.project_id = pk;
+            new_collaborator.save()
+            messages.success(request, f'Successfully added new collaborator!')
+            return redirect('collaborators')
     return render(request, 'project/collaborator_form.html', {'form': form})
-    #success da ode negde
-
-
 
 class CollaboratorListView(ListView):
     model = Collaborator

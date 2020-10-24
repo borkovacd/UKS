@@ -43,7 +43,6 @@ from project.views import ( ProjectListView,
                             MilestoneDeleteView,
 
                             CollaboratorListView,
-                            AddCollaboratorView,
                             CollaboratorDetailView,
                             CollaboratorDeleteView
                             )
