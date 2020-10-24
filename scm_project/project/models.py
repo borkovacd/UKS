@@ -10,6 +10,8 @@ from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput, DateTime
 #DateInput = partial(models.DateInput, {'class': 'datepicker'})
 from django import forms
 from users.models import Profile
+from datetime import datetime
+
 
 class Problem_State(Enum):
     OPEN = 1
@@ -36,9 +38,10 @@ class Problem(models.Model):
     reported_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created_time = models.DateTimeField(default = timezone.now, null=True)
     base_problem = models.ForeignKey('self', related_name='problem', on_delete=models.CASCADE, null=True, blank=True)
-    def get_absolute_url(self):
-        return reverse('problem-detail', kwargs={'pk': self.pk})
+    opened = models.BooleanField(default = True, null = True)
 
+    def get_absolute_url(self):
+        return reverse('problem-detail', kwargs={'pk': self.pk}) 
 
 class Label(models.Model):
     title = models.CharField(max_length=100)
@@ -66,3 +69,22 @@ class Collaborator(models.Model):
 
     def get_absolute_url(self):
         return reverse('collaborator-detail', kwargs={'pk': self.pk})
+
+
+class Custom_Event(models.Model):
+    created_time = models.DateTimeField()
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    problem = models.ForeignKey(Problem, on_delete=models.CASCADE, null=True)
+
+class Change_State(Custom_Event):
+    current_state = models.CharField(
+      max_length=2,
+      choices=[(tag, tag.value) for tag in Problem_State]
+    )
+
+    @classmethod
+    def create(cls, creator, state, problem):
+        created_time = datetime.now()
+        new_state = cls(creator=creator, problem=problem, current_state=state, created_time=created_time)
+        new_state.save()
+        return new_state

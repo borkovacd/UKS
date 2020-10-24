@@ -1,7 +1,10 @@
-from django.shortcuts import render, redirect
+
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 from bootstrap_datepicker_plus import DatePickerInput
 from django.forms.widgets import DateInput
+from django.urls import reverse
 from django.contrib.admin.widgets import AdminDateWidget
 from django import forms
 from tempus_dominus.widgets import DatePicker, TimePicker, DateTimePicker
@@ -99,6 +102,25 @@ class ProblemCreateView(LoginRequiredMixin, CreateView):
         form.instance.reported_by = self.request.user
         return super().form_valid(form)
 
+# parameters -> request, project_id, problem_id
+@login_required
+def close_problem(request, problem_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    current_user = request.user
+    problem.opened = False
+    problem.save()
+    pk = problem_id
+    return redirect(reverse('problem-detail', args=[pk]))
+
+# parameters -> request, project_id, problem_id
+@login_required
+def open_problem(request, problem_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    current_user = request.user
+    problem.opened = True
+    problem.save()
+    pk = problem_id
+    return redirect(reverse('problem-detail', args=[pk]))
 
 class ProblemDetailView(DetailView):
     model = Problem

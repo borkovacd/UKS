@@ -17,6 +17,16 @@
       <h5 class="article-title"><i>{{ object.description }}</i></h5>
       <br>
       <h5><strong><u>Project:</u></strong> {{ object.project.title }}</h5>
+      <br>
+        {% if object.opened  %}
+          <a href="/problem/{{object.id}}/close/">
+            <button type="button" class="btn btn-danger">Close problem</button>
+          </a> 
+        {% else %}
+          <a href="/problem/{{object.id}}/open/">
+            <button type="button" class="btn btn-success">Open problem</button>
+          </a>
+        {% endif %}      
 
     </div>
   </article>
