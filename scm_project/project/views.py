@@ -187,7 +187,7 @@ class LabelDeleteView(LoginRequiredMixin, DeleteView):
 
 class LabelUpdateView(LoginRequiredMixin, UpdateView):
     model = Label
-    fields = ['title', 'color', 'project']
+    form_class = LabelForm
 
 # MILESTONES
 class MilestoneListView(ListView):

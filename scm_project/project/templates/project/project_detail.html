@@ -50,7 +50,7 @@
           </div>
         </article>
     {% empty %}
-          <p>There are currently no problems reported with this filter</p>
+          <p>There are currently no problems attached to this project.</p>
     {% endfor %}
     </div>
     <div class="tab-pane container fade" id="milestones">
@@ -72,7 +72,7 @@
           </div>
         </article>
        {% empty %}
-          <p>There are currently no milestones reported with this filter</p>
+          <p>There are currently no milestones attached to this project.</p>
     {% endfor %}
     </div>
     <div class="tab-pane container fade" id="labels">
@@ -84,6 +84,8 @@
             <h5><a class="article-title" style="color: {{label.color}}" href="{% url 'label-detail' label.id %}">{{ label.title }}</a></h5>
           </div>
         </article>
+    {% empty %}
+          <p>There are currently no labels attached to this project.</p>    
     {% endfor %}
     </div>
     <div class="tab-pane container fade" id="collaborators">
@@ -95,6 +97,8 @@
             <h5><a class="article-title" href="{% url 'collaborator-detail' collaborator.id %}">{{ collaborator.user.username }}</a></h5>
           </div>
         </article>
+    {% empty %}
+          <p>There are currently no collaborators attached to this project.</p>    
     {% endfor %}
     </div>
   </div>
