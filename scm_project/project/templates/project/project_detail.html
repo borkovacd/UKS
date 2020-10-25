@@ -10,7 +10,6 @@
           <div>
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'project-update' object.id %}">Update</a>
             <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'project-delete' object.id %}">Delete</a>
-            <a class="btn btn-success btn-sm mt-1 mb-1" href="{% url 'project-collaborate' object.id %}">Add collaborator</a>
           </div>
         {% endif %}
       </div>
@@ -39,6 +38,7 @@
   <div class="tab-content">
     <div class="tab-pane container active" id="problems">
       <br>
+      <a class="btn btn-success btn-sm mt-1 mb-1" href="{% url 'problem-create' object.id %}">Add problem</a>
       {% for problem in problems %}
         <article class="media content-section">
           <!--<img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
@@ -55,6 +55,7 @@
     </div>
     <div class="tab-pane container fade" id="milestones">
       <br>
+      <a class="btn btn-success btn-sm mt-1 mb-1" href="{% url 'milestone-create' object.id %}">Add milestone</a>
       {% for milestone in milestones %}
         <article class="media content-section">
           <!--<img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
@@ -76,6 +77,7 @@
     </div>
     <div class="tab-pane container fade" id="labels">
       <br>
+      <a class="btn btn-success btn-sm mt-1 mb-1" href="{% url 'label-create' object.id %}">Add label</a>
       {% for label in labels %}
         <article class="media content-section">
           <div class="media-body">
@@ -86,6 +88,7 @@
     </div>
     <div class="tab-pane container fade" id="collaborators">
       <br>
+      <a class="btn btn-success btn-sm mt-1 mb-1" href="{% url 'project-collaborate' object.id %}">Add collaborator</a>    
       {% for collaborator in collaborators %}
         <article class="media content-section">
           <div class="media-body">

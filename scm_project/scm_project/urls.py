@@ -26,12 +26,10 @@ from project.views import ( ProjectListView,
                             ProjectUpdateView,
                             ProjectDeleteView,
 
-                            ProblemCreateView,
                             ProblemDetailView,
                             ProblemListView,
                             ProblemDeleteView,
 
-                            LabelCreateView,
                             LabelDetailView,
                             LabelListView,
                             LabelUpdateView,
@@ -39,7 +37,6 @@ from project.views import ( ProjectListView,
 
                             MilestoneListView,
                             MilestoneDetailView,
-                            MilestoneCreateView,
                             MilestoneUpdateView,
                             MilestoneDeleteView,
 
@@ -64,7 +61,7 @@ urlpatterns = [
     path('project/<int:pk>/update/', ProjectUpdateView.as_view(), name='project-update'),
     path('project/<int:pk>/delete/', ProjectDeleteView.as_view(), name='project-delete'),
 
-    path('problem/new/', ProblemCreateView.as_view(), name='problem-create'),
+    path('project/<int:pk>/new-problem/', project_views.addProblem, name='problem-create'),
     path('problem/<int:pk>/', ProblemDetailView.as_view(), name='problem-detail'),
     path('problems', ProblemListView.as_view(), name='problems'),
     path('problem/<int:pk>/delete/', ProblemDeleteView.as_view(), name='problem-delete'),
@@ -73,13 +70,13 @@ urlpatterns = [
 
     path('labels', LabelListView.as_view(), name='labels'),
     path('label/<int:pk>/', LabelDetailView.as_view(), name='label-detail'),
-    path('label/new/', LabelCreateView.as_view(), name='label-create'),
+    path('project/<int:pk>/new-label/', project_views.addLabel, name='label-create'),
     path('label/<int:pk>/update/', LabelUpdateView.as_view(), name='label-update'),
     path('label/<int:pk>/delete/', LabelDeleteView.as_view(), name='label-delete'),
 
     path('milestones', MilestoneListView.as_view(), name='milestones'),
     path('milestone/<int:pk>/', MilestoneDetailView.as_view(), name='milestone-detail'),
-    path('milestone/new/', MilestoneCreateView.as_view(), name='milestone-create'),
+    path('project/<int:pk>/new-milestone/', project_views.addMilestone, name='milestone-create'),
     path('milestone/<int:pk>/update/', MilestoneUpdateView.as_view(), name='milestone-update'),
     path('milestone/<int:pk>/delete/', MilestoneDeleteView.as_view(), name='milestone-delete'),
 

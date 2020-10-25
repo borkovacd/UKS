@@ -24,7 +24,7 @@ from .models import (
                     Collaborator
                     )
 
-from .forms import MilestoneForm, AddCollaboratorForm
+from .forms import MilestoneForm, AddCollaboratorForm, ProblemForm, LabelForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 
@@ -94,13 +94,26 @@ class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 # PROBLEMS
-class ProblemCreateView(LoginRequiredMixin, CreateView):
+"""class ProblemCreateView(LoginRequiredMixin, CreateView):
     model = Problem
     fields = ['title', 'description', 'project']
 
     def form_valid(self, form):
         form.instance.reported_by = self.request.user
         return super().form_valid(form)
+"""
+def addProblem(request, pk):
+    form = ProblemForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            new_problem = form.save(commit=False)
+            new_problem.project_id = pk;
+            new_problem.reported_by = request.user
+            new_problem.save()
+            messages.success(request, f'Successfully added new problem!')
+            return redirect(reverse('project-detail', args=[pk]))
+    return render(request, 'project/problem_form.html', {'form': form})
+
 
 # parameters -> request, project_id, problem_id
 @login_required
@@ -142,9 +155,20 @@ class ProblemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 # LABELS
-class LabelCreateView(LoginRequiredMixin, CreateView):
+"""class LabelCreateView(LoginRequiredMixin, CreateView):
     model = Label
     fields = ['title', 'color', 'project']
+"""
+def addLabel(request, pk):
+    form = LabelForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            new_label = form.save(commit=False)
+            new_label.project_id = pk;
+            new_label.save()
+            messages.success(request, f'Successfully added new label!')
+            return redirect(reverse('project-detail', args=[pk]))
+    return render(request, 'project/label_form.html', {'form': form})
 
 
 class LabelDetailView(DetailView):
@@ -175,9 +199,21 @@ class MilestoneListView(ListView):
 class MilestoneDetailView(DetailView):
     model = Milestone
 
-class MilestoneCreateView(LoginRequiredMixin, CreateView):
+"""class MilestoneCreateView(LoginRequiredMixin, CreateView):
     model = Milestone
-    form_class = MilestoneForm
+    form_class = MilestoneForm"""
+
+def addMilestone(request, pk):
+    form = MilestoneForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            new_milestone = form.save(commit=False)
+            new_milestone.project_id = pk;
+            new_milestone.save()
+            messages.success(request, f'Successfully added new milestone!')
+            return redirect(reverse('project-detail', args=[pk]))
+    return render(request, 'project/milestone_form.html', {'form': form})
+
 
 class MilestoneUpdateView(LoginRequiredMixin, UpdateView):
     model = Milestone
@@ -202,7 +238,7 @@ def addCollaborator(request, pk):
             new_collaborator.project_id = pk;
             new_collaborator.save()
             messages.success(request, f'Successfully added new collaborator!')
-            return redirect('collaborators')
+            return redirect(reverse('project-detail', args=[pk]))
     return render(request, 'project/collaborator_form.html', {'form': form})
 
 class CollaboratorListView(ListView):
