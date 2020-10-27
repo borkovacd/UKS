@@ -183,6 +183,10 @@ class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 """
 def addProblem(request, pk):
     form = ProblemForm(request.POST)
+    """milestone = Milestone.objects.filter(project_id = pk).values_list('title', 'description')
+                form.fields['milestone'].queryset = milestone
+            """
+    form.fields['milestone'].queryset = Milestone.objects.filter(project_id = pk)        
     if request.method == 'POST':
         if form.is_valid():
             new_problem = form.save(commit=False)
@@ -279,6 +283,12 @@ class MilestoneListView(ListView):
 
 class MilestoneDetailView(DetailView):
     model = Milestone
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['problems'] = Problem.objects.filter(milestone_id = self.object)
+        return context
+
 
 """class MilestoneCreateView(LoginRequiredMixin, CreateView):
     model = Milestone

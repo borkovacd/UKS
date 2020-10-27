@@ -25,7 +25,7 @@ class AddCollaboratorForm(forms.ModelForm):
 class ProblemForm(forms.ModelForm):
     class Meta:
         model = Problem
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'milestone']
 
 class LabelForm(forms.ModelForm):
     class Meta:

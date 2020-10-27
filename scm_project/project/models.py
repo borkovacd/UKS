@@ -30,6 +30,17 @@ class Project(models.Model):
     def get_absolute_url(self):
         return reverse('project-detail', kwargs={'pk': self.pk})
 
+class Milestone(models.Model):
+    title = models.CharField(max_length=100, null=True)
+    description = models.CharField(max_length=100, null=True, blank=True)
+    due_date = models.DateField(default = timezone.now, null = True, blank = True)
+    date_created = models.DateTimeField(default = timezone.now)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
+    opened = models.BooleanField(default = True, null = True)
+    date_closed = models.DateTimeField(null = True)
+
+    def get_absolute_url(self):
+        return reverse('milestone-detail', kwargs={'pk': self.pk})
 
 class Problem(models.Model):
     title = models.CharField(max_length=100)
@@ -42,6 +53,7 @@ class Problem(models.Model):
 
     base_problem = models.ForeignKey('self', related_name='problem', on_delete=models.CASCADE, null=True, blank=True)
     opened = models.BooleanField(default = True, null = True)
+    milestone = models.ForeignKey(Milestone, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse('problem-detail', kwargs={'pk': self.pk}) 
@@ -56,19 +68,6 @@ class Label(models.Model):
 
     def get_absolute_url(self):
         return reverse('label-detail', kwargs={'pk': self.pk})
-
-
-class Milestone(models.Model):
-    title = models.CharField(max_length=100, null=True)
-    description = models.CharField(max_length=100, null=True, blank=True)
-    due_date = models.DateField(default = timezone.now, null = True, blank = True)
-    date_created = models.DateTimeField(default = timezone.now)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
-    opened = models.BooleanField(default = True, null = True)
-    date_closed = models.DateTimeField(null = True)
-
-    def get_absolute_url(self):
-        return reverse('milestone-detail', kwargs={'pk': self.pk})
 
 class Collaborator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
