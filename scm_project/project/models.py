@@ -33,10 +33,13 @@ class Project(models.Model):
 
 class Problem(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(null = True, blank = True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
-    reported_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    reported_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='openers')
+    closed_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='closers')
     created_time = models.DateTimeField(default = timezone.now, null=True)
+    date_closed = models.DateTimeField(null = True)
+
     base_problem = models.ForeignKey('self', related_name='problem', on_delete=models.CASCADE, null=True, blank=True)
     opened = models.BooleanField(default = True, null = True)
 
@@ -46,6 +49,8 @@ class Problem(models.Model):
 class Label(models.Model):
     title = models.CharField(max_length=100)
     color = RGBColorField()
+    description = models.CharField(max_length=100, null = True, blank = True)
+
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
     problems = models.ManyToManyField(Problem, related_name='labels')
 
@@ -56,9 +61,11 @@ class Label(models.Model):
 class Milestone(models.Model):
     title = models.CharField(max_length=100, null=True)
     description = models.CharField(max_length=100, null=True, blank=True)
-    due_date = models.DateField(default = timezone.now)
+    due_date = models.DateField(default = timezone.now, null = True, blank = True)
     date_created = models.DateTimeField(default = timezone.now)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
+    opened = models.BooleanField(default = True, null = True)
+    date_closed = models.DateTimeField(null = True)
 
     def get_absolute_url(self):
         return reverse('milestone-detail', kwargs={'pk': self.pk})

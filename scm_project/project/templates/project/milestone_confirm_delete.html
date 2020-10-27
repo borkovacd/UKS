@@ -5,7 +5,11 @@
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Delete Milestone</legend>
-                <h2>Are you sure you want to delete the milestone "{{ object.title }}"</h2>
+                <h2>Are you sure you want to delete the milestone "{{ object.title }}" ?</h2>
+                <h4>
+                    Once you delete this milestone you will not be able to see it again. If you would like to close the milestone, remove any issues from the milestone and it will automatically close.
+                    Deleting this milestone will not delete or close the associated issues.
+                </h4>
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>

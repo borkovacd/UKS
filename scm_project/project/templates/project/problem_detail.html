@@ -8,15 +8,19 @@
         <small class="text-muted">{{ object.created_time|date:"F d, Y" }}</small>
         {% if object.reported_by == user %}
           <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">Update</a>
-            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'problem-delete' object.id %}">Delete</a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">Edit</a>
           </div>
         {% endif %}
       </div>
       <h2 class="article-title">{{ object.title }}</h2>
       <h5 class="article-title"><i>{{ object.description }}</i></h5>
-      <br>
-      <h5><strong><u>Project:</u></strong> {{ object.project.title }}</h5>
+      <p class="text-muted">
+          #{{problem.id}} opened {{problem.created_time|date:"F d, Y"}} by {{problem.reported_by}}
+            {% if problem.opened == False %}
+             <br>
+              #{{problem.id}} closed {{problem.date_closed|date:"F d, Y"}} by {{problem.closed_by}}
+            {% endif %}
+      </p>      
       <br>
         {% if object.opened  %}
           <a href="/problem/{{object.id}}/close/">

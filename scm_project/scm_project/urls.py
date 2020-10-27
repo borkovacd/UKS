@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -60,6 +61,10 @@ urlpatterns = [
     path('project/new/', ProjectCreateView.as_view(), name='project-create'),
     path('project/<int:pk>/update/', ProjectUpdateView.as_view(), name='project-update'),
     path('project/<int:pk>/delete/', ProjectDeleteView.as_view(), name='project-delete'),
+    path('project/<int:project_id>/problems-opened/', opened_problems, name='opened_problems'),
+    path('project/<int:project_id>/problems-closed/', closed_problems, name='closed_problems'),
+    path('project/<int:project_id>/milestones-opened/', opened_milestones, name='opened_milestones'),
+    path('project/<int:project_id>/milestones-closed/', closed_milestones, name='closed_milestones'),
 
     path('project/<int:pk>/new-problem/', project_views.addProblem, name='problem-create'),
     path('problem/<int:pk>/', ProblemDetailView.as_view(), name='problem-detail'),
@@ -79,6 +84,8 @@ urlpatterns = [
     path('project/<int:pk>/new-milestone/', project_views.addMilestone, name='milestone-create'),
     path('milestone/<int:pk>/update/', MilestoneUpdateView.as_view(), name='milestone-update'),
     path('milestone/<int:pk>/delete/', MilestoneDeleteView.as_view(), name='milestone-delete'),
+    path('milestone/<int:milestone_id>/close/', close_milestone, name='close_milestone'),
+    path('milestone/<int:milestone_id>/open/', open_milestone, name='open_milestone'),
 
     path('collaborators', CollaboratorListView.as_view(), name='collaborators'),
     #path('project/<int:pk>/collaborate/', AddCollaboratorView.as_view(), name='project-collaborate'),

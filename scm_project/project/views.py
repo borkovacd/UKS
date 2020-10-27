@@ -4,9 +4,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from bootstrap_datepicker_plus import DatePickerInput
 from django.forms.widgets import DateInput
+from django.utils import timezone
 from django.urls import reverse
+from datetime import datetime
 from django.contrib.admin.widgets import AdminDateWidget
 from django import forms
+from .filters import ProblemFilter
 from tempus_dominus.widgets import DatePicker, TimePicker, DateTimePicker
 from django.forms.widgets import HiddenInput
 from django.views.generic import (
@@ -54,8 +57,84 @@ class ProjectDetailView(DetailView):
         context['labels'] = Label.objects.filter(project_id=self.object)
         context['milestones'] = Milestone.objects.filter(project_id = self.object)
         context['problems'] = Problem.objects.filter(project_id = self.object)
+
         context['collaborators'] = Collaborator.objects.filter(project_id = self.object)
+        context['opened_problems'] = Problem.objects.filter(project_id = self.object, opened = True)
+        context['closed_problems'] = Problem.objects.filter(project_id = self.object, opened = False)
         return context
+
+@login_required
+def opened_problems(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    problems = Problem.objects.filter(project_id = project.pk, opened = True)
+
+    labels = Label.objects.filter(project_id = project.pk)
+    milestones = Milestone.objects.filter(project_id = project.pk)
+    collaborators = Collaborator.objects.filter(project_id = project.pk)
+    pk = project_id
+    context = {
+        'project' : project,
+        'problems' : problems,
+        'labels' : labels,
+        'milestones' : milestones,
+        'collaborators' : collaborators
+    }   
+    return render(request, 'project/problems.html', context=context)
+
+@login_required
+def closed_problems(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    problems = Problem.objects.filter(project_id = project_id, opened = False)
+
+    labels = Label.objects.filter(project_id = project.pk)
+    milestones = Milestone.objects.filter(project_id = project.pk)
+    collaborators = Collaborator.objects.filter(project_id = project.pk)
+    pk = project_id
+    context = {
+        'project' : project,
+        'problems' : problems,
+        'labels' : labels,
+        'milestones' : milestones,
+        'collaborators' : collaborators
+    }   
+    return render(request, 'project/problems.html', context=context)
+
+@login_required
+def opened_milestones(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    milestones = Milestone.objects.filter(project_id = project.pk, opened = True)
+
+    labels = Label.objects.filter(project_id = project.pk)
+    problems = Milestone.objects.filter(project_id = project.pk)
+    collaborators = Collaborator.objects.filter(project_id = project.pk)
+    pk = project_id
+    context = {
+        'project' : project,
+        'problems' : problems,
+        'labels' : labels,
+        'milestones' : milestones,
+        'collaborators' : collaborators
+    }   
+    return render(request, 'project/milestones.html', context=context)
+
+@login_required
+def closed_milestones(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    milestones = Milestone.objects.filter(project_id = project.pk, opened = False)
+
+    labels = Label.objects.filter(project_id = project.pk)
+    problems = Milestone.objects.filter(project_id = project.pk)
+    collaborators = Collaborator.objects.filter(project_id = project.pk)
+    pk = project_id
+    context = {
+        'project' : project,
+        'problems' : problems,
+        'labels' : labels,
+        'milestones' : milestones,
+        'collaborators' : collaborators
+    }   
+    return render(request, 'project/milestones.html', context=context)
+
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
@@ -121,6 +200,8 @@ def close_problem(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     current_user = request.user
     problem.opened = False
+    problem.date_closed = timezone.now()
+    problem.closed_by = current_user
     problem.save()
     pk = problem_id
     return redirect(reverse('problem-detail', args=[pk]))
@@ -146,7 +227,7 @@ class ProblemListView(ListView):
 
 class ProblemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Problem
-    success_url = '/problems'
+    success_url = '/'
 
     def test_func(self):
         project = self.get_object()
@@ -182,7 +263,7 @@ class LabelListView(ListView):
 
 class LabelDeleteView(LoginRequiredMixin, DeleteView):
     model = Label
-    success_url = '/labels'
+    success_url = '/'
 
 
 class LabelUpdateView(LoginRequiredMixin, UpdateView):
@@ -221,8 +302,29 @@ class MilestoneUpdateView(LoginRequiredMixin, UpdateView):
 
 class MilestoneDeleteView(LoginRequiredMixin, DeleteView):
     model = Milestone
-    success_url = '/milestones'
+    success_url = '/'
 
+# parameters -> request, project_id, problem_id
+@login_required
+def close_milestone(request, milestone_id):
+    milestone = get_object_or_404(Milestone, pk=milestone_id)
+    current_user = request.user
+    milestone.opened = False
+    problem.date_closed = timezone.now()
+    problem.closed_by = current_user
+    milestone.save()
+    pk = milestone_id
+    return redirect(reverse('milestone-detail', args=[pk]))
+
+# parameters -> request, project_id, problem_id
+@login_required
+def open_milestone(request, milestone_id):
+    milestone = get_object_or_404(Milestone, pk=milestone_id)
+    current_user = request.user
+    milestone.opened = True
+    milestone.save()
+    pk = milestone_id
+    return redirect(reverse('milestone-detail', args=[pk]))
 
 # COLLABORATORS
 
@@ -251,7 +353,7 @@ class CollaboratorDetailView(DetailView):
 
 class CollaboratorDeleteView(LoginRequiredMixin, DeleteView):
     model = Collaborator
-    success_url = '/collaborators'
+    success_url = '/'
 
 
 

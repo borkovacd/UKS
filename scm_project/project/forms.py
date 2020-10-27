@@ -30,4 +30,4 @@ class ProblemForm(forms.ModelForm):
 class LabelForm(forms.ModelForm):
     class Meta:
         model = Label
-        fields = ['title', 'color']
+        fields = ['title', 'description', 'color']
