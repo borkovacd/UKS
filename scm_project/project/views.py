@@ -310,8 +310,7 @@ def close_milestone(request, milestone_id):
     milestone = get_object_or_404(Milestone, pk=milestone_id)
     current_user = request.user
     milestone.opened = False
-    problem.date_closed = timezone.now()
-    problem.closed_by = current_user
+    milestone.date_closed = timezone.now()
     milestone.save()
     pk = milestone_id
     return redirect(reverse('milestone-detail', args=[pk]))

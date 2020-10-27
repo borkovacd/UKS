@@ -94,7 +94,11 @@
                 <span class="glyphicon glyphicon-calendar"></span>              
                   <strong style="margin-right: 15px">due date {{milestone.due_date|date:"F d, Y"}}</strong>
                 <span class="glyphicon glyphicon-time"></span>
-                opened {{milestone.date_created|date:"F d, Y"}}
+                {% if milestone.opened %}
+                  opened {{milestone.date_created|date:"F d, Y"}}
+                {% else %}
+                  closed {{milestone.date_closed|date:"F d, Y"}}
+                {% endif %}  
               </p>
               <h5 class="text-muted">
                 {{milestone.description}}
