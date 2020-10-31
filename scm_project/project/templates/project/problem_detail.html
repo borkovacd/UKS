@@ -33,7 +33,18 @@
           </a>
         {% endif %}
 
-
+      <hr/>  
+      <div>
+      <a href="set_milestone/">
+        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+        &nbsp;&nbsp;&nbsp;
+        <strong>Milestone</strong>
+      </a>
+      <p>
+          {{ object.milestone.title }}
+      </p>
+    </div>
+    <hr/>
         {% for comment in object.comments.all %}
           <div class="content-section  mt-3">
             <h5>Comment: </h5>

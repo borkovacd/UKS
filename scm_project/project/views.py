@@ -222,6 +222,22 @@ def open_problem(request, problem_id):
     pk = problem_id
     return redirect(reverse('problem-detail', args=[pk]))
 
+@login_required
+def set_milestone_view(request, problem_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    project_milestones = Milestone.objects.filter(project=problem.project_id)
+    return render(request, 'project/link_milestone.html', {'problem': problem, 'milestones': project_milestones})
+
+@login_required
+def link_milestone(request, problem_id, milestone_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    milestone = get_object_or_404(Milestone, pk=milestone_id)
+    problem.milestone = milestone
+    problem.save()
+    pk = problem_id
+    return redirect(reverse('problem-detail', args=[pk]))
+
+
 class ProblemDetailView(FormMixin, DetailView):
     model = Problem
     context_object_name = 'comment'

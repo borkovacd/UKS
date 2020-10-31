@@ -1,0 +1,57 @@
+{% extends "project/base.html" %}
+{% block content %}
+          <div class="media-body">
+            <u>Problem title </u>
+            <h2><a class="article-title" href="{% url 'problem-detail' problem.id %}">{{ problem.title }}</a></h2>
+          <p class="text-muted">
+                  #{{problem.id}} opened {{problem.created_time|date:"F d, Y"}} by {{problem.reported_by}}
+          </p>  
+          </div>
+
+  <hr />
+  <br/>
+  <h4>Link this problem to milestone</h4>
+  <br />
+    {% for milestone in milestones %}
+    {% if problem.milestone.id == milestone.id %}
+        <article class="media content-section">
+          <div class="media-body">
+            <h2><a class="article-title" href="{% url 'milestone-detail' milestone.id %}">{{ milestone.title }}</a></h2>
+            <p class="text-muted">
+                  <strong style="margin-right: 15px">due date {{milestone.due_date|date:"F d, Y"}}</strong>
+                <span class="glyphicon glyphicon-calendar"></span>
+                opened {{milestone.date_created|date:"F d, Y"}}
+              </p>
+              <p class="text-muted">
+                {{milestone.description}}
+              </p>
+              <span class="col-xs-1">
+              <strong class="text-success">Linked</strong>
+            </span>
+          </div>
+        </article>
+     {% else %}
+              <article class="media content-section">
+          <div class="media-body">
+            <h2><a class="article-title" href="{% url 'milestone-detail' milestone.id %}">{{ milestone.title }}</a></h2>
+            <p class="text-muted">
+                  <strong style="margin-right: 15px">due date {{milestone.due_date|date:"F d, Y"}}</strong>
+                <span class="glyphicon glyphicon-calendar"></span>
+                opened {{milestone.date_created|date:"F d, Y"}}
+              </p>
+              <p class="text-muted">
+                {{milestone.description}}
+              </p>
+          <a href="/problem/{{problem.id}}/set_milestone/{{milestone.id}}/link">Link
+          </a>
+          </div>
+        </article>
+     {% endif %}   
+       {% empty %}
+          <p>There are currently no milestones reported with this filter</p>
+    {% endfor %}
+{% endblock content %}
+
+
+
+
