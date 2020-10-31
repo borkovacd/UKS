@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from bootstrap_datepicker_plus import DatePickerInput
 from django.forms.widgets import DateInput
 from django.utils import timezone
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from datetime import datetime
 from django.contrib.admin.widgets import AdminDateWidget
 from django import forms
@@ -27,9 +27,10 @@ from .models import (
                     Collaborator
                     )
 
-from .forms import MilestoneForm, AddCollaboratorForm, ProblemForm, LabelForm
+from .forms import MilestoneForm, AddCollaboratorForm, ProblemForm, LabelForm, CommentForm
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.views.generic.edit import FormMixin
 
 
 
@@ -63,6 +64,7 @@ class ProjectDetailView(DetailView):
         context['closed_problems'] = Problem.objects.filter(project_id = self.object, opened = False)
         return context
 
+
 @login_required
 def opened_problems(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
@@ -78,7 +80,7 @@ def opened_problems(request, project_id):
         'labels' : labels,
         'milestones' : milestones,
         'collaborators' : collaborators
-    }   
+    }
     return render(request, 'project/problems.html', context=context)
 
 @login_required
@@ -96,7 +98,7 @@ def closed_problems(request, project_id):
         'labels' : labels,
         'milestones' : milestones,
         'collaborators' : collaborators
-    }   
+    }
     return render(request, 'project/problems.html', context=context)
 
 @login_required
@@ -114,7 +116,7 @@ def opened_milestones(request, project_id):
         'labels' : labels,
         'milestones' : milestones,
         'collaborators' : collaborators
-    }   
+    }
     return render(request, 'project/milestones.html', context=context)
 
 @login_required
@@ -132,7 +134,7 @@ def closed_milestones(request, project_id):
         'labels' : labels,
         'milestones' : milestones,
         'collaborators' : collaborators
-    }   
+    }
     return render(request, 'project/milestones.html', context=context)
 
 
@@ -186,7 +188,7 @@ def addProblem(request, pk):
     """milestone = Milestone.objects.filter(project_id = pk).values_list('title', 'description')
                 form.fields['milestone'].queryset = milestone
             """
-    form.fields['milestone'].queryset = Milestone.objects.filter(project_id = pk)        
+    form.fields['milestone'].queryset = Milestone.objects.filter(project_id = pk)
     if request.method == 'POST':
         if form.is_valid():
             new_problem = form.save(commit=False)
@@ -220,8 +222,38 @@ def open_problem(request, problem_id):
     pk = problem_id
     return redirect(reverse('problem-detail', args=[pk]))
 
-class ProblemDetailView(DetailView):
+class ProblemDetailView(FormMixin, DetailView):
     model = Problem
+    context_object_name = 'comment'
+    form_class = CommentForm
+
+    def get_success_url(self):
+        return reverse_lazy('problem-detail', kwargs={'pk': self.object.pk})
+
+    # def get_object(self):
+    #     try:
+    #         my_object = User.objects.get(id=self.kwargs.get('pk'))
+    #         return my_object
+    #     except self.model.DoesNotExist:
+    #         raise Http404("No MyModel matches the given query.")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProblemDetailView, self).get_context_data(*args, **kwargs)
+        comment = self.get_object()
+        # form
+        context['form'] = self.get_form()
+        context['comment'] = comment
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        comment = form.save()
+        problem = get_object_or_404(Problem, pk=self.object.pk)
+        problem.comments.add(comment)
+        problem.save()
+        return super(ProblemDetailView, self).form_valid(form)
+
 
 class ProblemListView(ListView):
     model = Problem

@@ -12,6 +12,11 @@ from django import forms
 from users.models import Profile
 from datetime import datetime
 
+class Comment(models.Model):
+    text = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.text
 
 class Problem_State(Enum):
     OPEN = 1
@@ -50,13 +55,14 @@ class Problem(models.Model):
     closed_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='closers')
     created_time = models.DateTimeField(default = timezone.now, null=True)
     date_closed = models.DateTimeField(null = True)
+    comments = models.ManyToManyField(Comment, related_name='comments')
 
     base_problem = models.ForeignKey('self', related_name='problem', on_delete=models.CASCADE, null=True, blank=True)
     opened = models.BooleanField(default = True, null = True)
     milestone = models.ForeignKey(Milestone, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_absolute_url(self):
-        return reverse('problem-detail', kwargs={'pk': self.pk}) 
+        return reverse('problem-detail', kwargs={'pk': self.pk})
 
 class Label(models.Model):
     title = models.CharField(max_length=100)
@@ -75,7 +81,6 @@ class Collaborator(models.Model):
 
     def get_absolute_url(self):
         return reverse('collaborator-detail', kwargs={'pk': self.pk})
-
 
 class Custom_Event(models.Model):
     created_time = models.DateTimeField()
