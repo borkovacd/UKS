@@ -307,6 +307,11 @@ def addLabel(request, pk):
 class LabelDetailView(DetailView):
     model = Label
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['problems'] = Problem.objects.filter(project_id = self.object.project_id)
+        return context    
+
 class LabelListView(ListView):
     model = Label
     template_name = 'project/labels.html'  # <app>/<model>_<viewtype>.html
