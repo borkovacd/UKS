@@ -1,1 +1,1 @@
-web: gunicorn scm_project.wsgi
+web: gunicorn scm_project/scm_project.wsgi
