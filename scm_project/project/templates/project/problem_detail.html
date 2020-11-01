@@ -16,10 +16,10 @@
       <h2 class="article-title">{{ object.title }}</h2>
       <h5 class="article-title"><i>{{ object.description }}</i></h5>
       <p class="text-muted">
-          #{{problem.id}} opened {{problem.created_time|date:"F d, Y"}} by {{problem.reported_by}}
-            {% if problem.opened == False %}
+          #{{problem.id}} opened {{object.created_time|date:"F d, Y"}} by {{object.reported_by}}
+            {% if object.opened == False %}
              <br>
-              #{{problem.id}} closed {{problem.date_closed|date:"F d, Y"}} by {{problem.closed_by}}
+              #{{object.id}} closed {{object.date_closed|date:"F d, Y"}} by {{object.closed_by}}
             {% endif %}
       </p>
       <br>
