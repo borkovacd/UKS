@@ -1,1 +1,1 @@
-web: gunicorn scm_project.wsgi --log-file -
+web: gunicorn --pythonpath scm_project scm_project.wsgi
