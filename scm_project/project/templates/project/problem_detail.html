@@ -51,11 +51,11 @@
         &nbsp;&nbsp;&nbsp;
         <strong>Label</strong>
       </a>
-      {% for label in problem.labels %}
       <p>
+      {% for label in object.labels.all %}
           {{ label.title }}
-      </p>
       {% endfor %}
+      <p>
     </div>
     <hr/>
 

@@ -253,7 +253,7 @@ def set_label_view(request, problem_id):
 
         existsAlready = False
 
-    return render(request, 'project/apply_label.html', {'problem': problem, 'labels': project_labels, 'differentLabels': differentLabels})
+    return render(request, 'project/apply_label.html', {'problem': problem, 'differentLabels': differentLabels})
 
 @login_required
 def apply_label(request, problem_id, label_id):
