@@ -47,6 +47,15 @@ class Milestone(models.Model):
     def get_absolute_url(self):
         return reverse('milestone-detail', kwargs={'pk': self.pk})
 
+class Label(models.Model):
+    title = models.CharField(max_length=100)
+    color = RGBColorField()
+    description = models.CharField(max_length=100, null = True, blank = True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
+
+    def get_absolute_url(self):
+        return reverse('label-detail', kwargs={'pk': self.pk})
+
 class Problem(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(null = True, blank = True)
@@ -60,20 +69,11 @@ class Problem(models.Model):
     base_problem = models.ForeignKey('self', related_name='problem', on_delete=models.CASCADE, null=True, blank=True)
     opened = models.BooleanField(default = True, null = True)
     milestone = models.ForeignKey(Milestone, on_delete=models.CASCADE, null=True, blank=True)
+    labels = models.ManyToManyField(Label, related_name='labels')
 
     def get_absolute_url(self):
         return reverse('problem-detail', kwargs={'pk': self.pk})
 
-class Label(models.Model):
-    title = models.CharField(max_length=100)
-    color = RGBColorField()
-    description = models.CharField(max_length=100, null = True, blank = True)
-
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
-    problems = models.ManyToManyField(Problem, related_name='labels')
-
-    def get_absolute_url(self):
-        return reverse('label-detail', kwargs={'pk': self.pk})
 
 class Collaborator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

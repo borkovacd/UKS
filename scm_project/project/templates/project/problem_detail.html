@@ -51,9 +51,11 @@
         &nbsp;&nbsp;&nbsp;
         <strong>Label</strong>
       </a>
+      {% for label in problem.labels %}
       <p>
-          {{ object.label.title }}
+          {{ label.title }}
       </p>
+      {% endfor %}
     </div>
     <hr/>
 

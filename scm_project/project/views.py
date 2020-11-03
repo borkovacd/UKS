@@ -241,16 +241,26 @@ def link_milestone(request, problem_id, milestone_id):
 def set_label_view(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     project_labels = Label.objects.filter(project=problem.project_id)
-    return render(request, 'project/apply_label.html', {'problem': problem, 'labels': project_labels})
+    differentLabels = []
+    existsAlready = False
+    for temp_label in project_labels:
+        for temp_label2 in problem.labels.all():
+            if temp_label.id == temp_label2.id:
+                existsAlready = True
+
+        if existsAlready == False:
+            differentLabels.append(temp_label)
+
+        existsAlready = False
+
+    return render(request, 'project/apply_label.html', {'problem': problem, 'labels': project_labels, 'differentLabels': differentLabels})
 
 @login_required
 def apply_label(request, problem_id, label_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     label = get_object_or_404(Label, pk=label_id)
-    label.problems.add(problem)
-    label.save()
-    #problem.label = label
-    #problem.save()
+    problem.labels.add(label)
+    problem.save()
     pk = problem_id
     return redirect(reverse('problem-detail', args=[pk]))
 
