@@ -51,11 +51,13 @@
         &nbsp;&nbsp;&nbsp;
         <strong>Label</strong>
       </a>
-      <p>
+      <div>
       {% for label in object.labels.all %}
-          {{ label.title }}
+        <span class="label label-lg" style="background-color: {{label.color}} !important; color: white; padding: 2px">
+          {{label.title}}
+      </span>
       {% endfor %}
-      <p>
+      <div></div>
     </div>
     <hr/>
 

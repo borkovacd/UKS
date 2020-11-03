@@ -15,30 +15,28 @@
   <br />
 
   {% for temp_label in problem.labels.all %}
-    <article class="media content-section">
-      <div class="media-body">
-        <h2><a class="article-title" href="{% url 'label-detail' temp_label.id %}">{{ temp_label.title }}</a></h2>
-        <p class="text-muted">
-          {{temp_label.description}}
+    <article class="media content-section" style="padding: 0px; border-radius: 2px;">
+      <div class="media-body" style="background-color: {{temp_label.color}} !important; color: white;">
+        <h2><a class="article-title" style="color: white;" href="{% url 'label-detail' temp_label.id %}">{{ temp_label.title }}</a></h2>
+        <p style="color: white">
+          <i>Description:</i> {{temp_label.description}}
         </p>
         <span class="col-xs-1">
-          <strong class="text-success">Applied</strong>
+          <h3 class="text-success" style="color: white">Applied</h3>
         </span>
       </div>
     </article>
   {% endfor %}
 
-
-
   {% for label in differentLabels %}
-      <article class="media content-section">
-        <div class="media-body">
-          <h2><a class="article-title" href="{% url 'label-detail' label.id %}">{{ label.title }}</a></h2>
-          <p class="text-muted">
-            {{label.description}}
-          </p>
-          <a href="/problem/{{problem.id}}/apply_label/{{label.id}}/apply">Apply
-          </a>
+      <article class="media content-section" style="padding: 0px; border-radius: 2px;">
+        <div class="media-body" style="background-color: {{label.color}} !important; color: white;">
+          <h2><a class="article-title" style="color: white;" href="{% url 'label-detail' label.id %}">{{ label.title }}</a></h2>
+          <p style="color: white">
+          <i>Description:</i> {{label.description}}
+        </p>
+          <h3><a class=" btn btn-success" style="color: white" href="/problem/{{problem.id}}/apply_label/{{label.id}}/apply">Apply
+          </a></h3>
         </div>
     </article>
 
