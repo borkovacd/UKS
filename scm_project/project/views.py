@@ -237,6 +237,23 @@ def link_milestone(request, problem_id, milestone_id):
     pk = problem_id
     return redirect(reverse('problem-detail', args=[pk]))
 
+@login_required
+def set_label_view(request, problem_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    project_labels = Label.objects.filter(project=problem.project_id)
+    return render(request, 'project/apply_label.html', {'problem': problem, 'labels': project_labels})
+
+@login_required
+def apply_label(request, problem_id, label_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    label = get_object_or_404(Label, pk=label_id)
+    label.problems.add(problem)
+    label.save()
+    #problem.label = label
+    #problem.save()
+    pk = problem_id
+    return redirect(reverse('problem-detail', args=[pk]))
+
 
 class ProblemDetailView(FormMixin, DetailView):
     model = Problem
@@ -310,7 +327,7 @@ class LabelDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['problems'] = Problem.objects.filter(project_id = self.object.project_id)
-        return context    
+        return context
 
 class LabelListView(ListView):
     model = Label

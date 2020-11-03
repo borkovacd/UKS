@@ -1,0 +1,52 @@
+{% extends "project/base.html" %}
+{% block content %}
+          <div class="media-body">
+            <u>Problem title </u>
+            <h2><a class="article-title" href="{% url 'problem-detail' problem.id %}">{{ problem.title }}</a></h2>
+          <p class="text-muted">
+                  #{{problem.id}} opened {{problem.created_time|date:"F d, Y"}} by {{problem.reported_by}}
+          </p>
+          </div>
+
+  <hr />
+  <br/>
+  <h4>Apply label to the project</h4>
+  <br />
+    {% for label in labels %}
+    {% for temp_problem in label.problems.all %}
+    {% if problem.id == temp_problem.id %}
+        <article class="media content-section">
+          <div class="media-body">
+            <h2><a class="article-title" href="{% url 'label-detail' label.id %}">{{ label.title }}</a></h2>
+              <p class="text-muted">
+                {{label.description}}
+              </p>
+              <span class="col-xs-1">
+              <strong class="text-success">Applied</strong>
+            </span>
+          </div>
+        </article>
+        {% endif %}
+        {% endfor %}
+
+              <article class="media content-section">
+          <div class="media-body">
+            <h2><a class="article-title" href="{% url 'label-detail' label.id %}">{{ label.title }}</a></h2>
+
+              <p class="text-muted">
+                {{label.description}}
+              </p>
+          <a href="/problem/{{problem.id}}/apply_label/{{label.id}}/apply">Apply
+          </a>
+          </div>
+        </article>
+
+       {% empty %}
+          <p>There are currently no available labels</p>
+    {% endfor %}
+
+{% endblock content %}
+
+
+
+

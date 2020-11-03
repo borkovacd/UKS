@@ -31,7 +31,7 @@
           </a>
         {% endif %}
 
-      <hr/>  
+      <hr/>
       <div>
       <a href="set_milestone/">
         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -43,6 +43,20 @@
       </p>
     </div>
     <hr/>
+
+    <hr/>
+    <div>
+      <a href="apply_label/">
+        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+        &nbsp;&nbsp;&nbsp;
+        <strong>Label</strong>
+      </a>
+      <p>
+          {{ object.label.title }}
+      </p>
+    </div>
+    <hr/>
+
         {% for comment in object.comments.all %}
           <div class="content-section  mt-3">
             <h5>Comment: </h5>
