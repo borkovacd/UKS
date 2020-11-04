@@ -11,34 +11,42 @@
 
   <hr />
   <br/>
-  <h4>Apply label to the problem</h4>
-  <br />
+  <h2 class="ml-3"><i>Labels:<i></h2>
+
 
   {% for temp_label in problem.labels.all %}
-    <article class="media content-section" style="padding: 0px; border-radius: 2px;">
-      <div class="media-body" style="background-color: {{temp_label.color}} !important; color: white;">
-        <h2><a class="article-title" style="color: white;" href="{% url 'label-detail' temp_label.id %}">{{ temp_label.title }}</a></h2>
-        <p style="color: white">
+    <div class="mt-4">
+      <span class="label label-lg mr-1 rounded-pill" style="background-color: {{temp_label.color}} !important; font-size: x-large; color: white; padding: 5px">
+         <a  style="color: white;" href="{% url 'label-detail' temp_label.id %}">{{ temp_label.title }}</a>
+      </span>
+      <span>
+        <a class="glyphicon glyphicon-remove-sign" style="color: red; font-size: x-large;">
+        </a>
+      </span>
+        <h4 class="ml-3 mt-2">
           <i>Description:</i> {{temp_label.description}}
-        </p>
-        <span class="col-xs-1">
-          <h3 class="text-success" style="color: white">Applied</h3>
-        </span>
-      </div>
-    </article>
+        </h4>
+    </div>
   {% endfor %}
 
   {% for label in differentLabels %}
-      <article class="media content-section" style="padding: 0px; border-radius: 2px;">
-        <div class="media-body" style="background-color: {{label.color}} !important; color: white;">
-          <h2><a class="article-title" style="color: white;" href="{% url 'label-detail' label.id %}">{{ label.title }}</a></h2>
-          <p style="color: white">
+    <div class="mt-4">
+      <span class="label label-lg mr-2 rounded-pill" style="background-color: {{label.color}} !important; font-size: x-large; color: white; padding: 5px">
+         <a  style="color: white;" href="{% url 'label-detail' label.id %}">{{ label.title }}</a>
+      </span>
+      <span>
+        <a class="glyphicon glyphicon-plus-sign" style="color: green; font-size: x-large;" href="/problem/{{problem.id}}/apply_label/{{label.id}}/apply">
+      </a></span>
+
+        <h4 class="ml-3 mt-2">
           <i>Description:</i> {{label.description}}
-        </p>
-          <h3><a class=" btn btn-success" style="color: white" href="/problem/{{problem.id}}/apply_label/{{label.id}}/apply">Apply
-          </a></h3>
-        </div>
-    </article>
+        </h4>
+
+
+    </div>
+
+
+
 
   {% endfor %}
 
