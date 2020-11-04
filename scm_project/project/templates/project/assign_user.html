@@ -11,34 +11,31 @@
 
   <hr />
   <br/>
-  <h4>Apply label to the problem</h4>
+  <h4>Assign user to the problem</h4>
   <br />
 
-  {% for temp_label in problem.labels.all %}
+  {% for user in problem.assignees.all %}
     <article class="media content-section" style="padding: 0px; border-radius: 2px;">
       <div class="media-body" style="background-color: {{temp_label.color}} !important; color: white;">
-        <h2><a class="article-title" style="color: white;" href="{% url 'label-detail' temp_label.id %}">{{ temp_label.title }}</a></h2>
-        <p style="color: white">
-          <i>Description:</i> {{temp_label.description}}
-        </p>
+        <h2><a class="article-title" style="color: white;" href="{% url 'user-detail' user.id %}">{{ user.username }}</a></h2>
         <span class="col-xs-1">
-          <h3 class="text-success" style="color: white">Applied</h3>
+          <h3 class="text-success" style="color: white">Assigned</h3>
         </span>
       </div>
     </article>
   {% endfor %}
 
-  {% for label in differentLabels %}
+  {% for user in users %}
       <article class="media content-section" style="padding: 0px; border-radius: 2px;">
         <div class="media-body" style="background-color: {{label.color}} !important; color: white;">
-          <h2><a class="article-title" style="color: white;" href="{% url 'label-detail' label.id %}">{{ label.title }}</a></h2>
-          <p style="color: white">
-          <i>Description:</i> {{label.description}}
-        </p>
-          <h3><a class=" btn btn-success" style="color: white" href="/problem/{{problem.id}}/apply_label/{{label.id}}/apply">Apply
+          <h2>{{ user.user.username }}</h2>
+          <h3><a class=" btn btn-success" style="color: white" href="/problem/{{problem.id}}/assign_user/{{user.id}}/assign">Assign
           </a></h3>
         </div>
     </article>
+
+     {% empty %}
+          <p>There are currently no users who can be assigned</p>
 
   {% endfor %}
 

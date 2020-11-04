@@ -244,7 +244,7 @@ def unlink_milestone(request, problem_id, milestone_id):
     problem.milestone = None
     problem.save()
     pk = problem_id
-    return redirect(reverse('problem-detail', args=[pk]))   
+    return redirect(reverse('problem-detail', args=[pk]))
 
 @login_required
 def set_label_view(request, problem_id):
@@ -269,6 +269,46 @@ def apply_label(request, problem_id, label_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     label = get_object_or_404(Label, pk=label_id)
     problem.labels.add(label)
+    problem.save()
+    pk = problem_id
+    return redirect(reverse('problem-detail', args=[pk]))
+
+@login_required
+def assign_user_view(request, problem_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    project_collaborators = Collaborator.objects.filter(project=problem.project_id)
+    project = Project.objects.filter(id=problem.project_id)
+    #author = User.objects.filter(id=project.author_id)
+
+    notAssignedUsers = []
+    assignedAlready = False
+    for temp_collaborator_user in project_collaborators:
+        for temp_user in problem.assignees.all():
+            if temp_collaborator_user.user.username == temp_user.username:
+                assignedAlready = True
+
+        if assignedAlready == False:
+            notAssignedUsers.append(temp_collaborator_user)
+
+        assignedAlready = False
+
+    # assignedAlready = False
+    # for temp_user in problem.assignees.all():
+    #     if author.id == temp_user.id:
+    #         assignedAlready = True
+
+    #     if assignedAlready == False:
+    #         notAssignedUsers.append(author)
+
+    # assignedAlready = False
+
+    return render(request, 'project/assign_user.html', {'problem': problem, 'users': notAssignedUsers})
+
+@login_required
+def assign_user(request, problem_id, user_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    user = get_object_or_404(User, pk=user_id)
+    problem.assignees.add(user)
     problem.save()
     pk = problem_id
     return redirect(reverse('problem-detail', args=[pk]))
@@ -352,7 +392,7 @@ class LabelDetailView(DetailView):
                 if label.id == self.object.id:
                     labelProblems.append(problem)
 
-        context['problems'] = labelProblems            
+        context['problems'] = labelProblems
         return context
 
 class LabelListView(ListView):

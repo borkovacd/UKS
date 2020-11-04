@@ -70,6 +70,7 @@ class Problem(models.Model):
     opened = models.BooleanField(default = True, null = True)
     milestone = models.ForeignKey(Milestone, on_delete=models.CASCADE, null=True, blank=True)
     labels = models.ManyToManyField(Label, related_name='labels')
+    assignees = models.ManyToManyField(User, related_name='assignees')
 
     def get_absolute_url(self):
         return reverse('problem-detail', kwargs={'pk': self.pk})

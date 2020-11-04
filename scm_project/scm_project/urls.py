@@ -74,9 +74,11 @@ urlpatterns = [
     path('problem/<int:problem_id>/open/', open_problem, name='open_problem'),
     path('problem/<int:problem_id>/set_milestone/', set_milestone_view, name='set_milestone_view'),
     path('problem/<int:problem_id>/set_milestone/<int:milestone_id>/link/', link_milestone, name='link_milestone'),
-    path('problem/<int:problem_id>/set_milestone/<int:milestone_id>/unlink/', unlink_milestone, name='unlink_milestone'),    
+    path('problem/<int:problem_id>/set_milestone/<int:milestone_id>/unlink/', unlink_milestone, name='unlink_milestone'),
     path('problem/<int:problem_id>/apply_label/', set_label_view, name='set_label_view'),
     path('problem/<int:problem_id>/apply_label/<int:label_id>/apply/', apply_label, name='apply_label'),
+    path('problem/<int:problem_id>/assign_user/', assign_user_view, name='assign_user_view'),
+    path('problem/<int:problem_id>/assign_user_view/<int:user_id>/assign/', assign_user, name='assign_user'),
 
     path('labels', LabelListView.as_view(), name='labels'),
     path('label/<int:pk>/', LabelDetailView.as_view(), name='label-detail'),

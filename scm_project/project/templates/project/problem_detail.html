@@ -49,12 +49,29 @@
       <a href="apply_label/">
         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
         &nbsp;&nbsp;&nbsp;
-        <strong>Label</strong>
+        <strong>Labels</strong>
       </a>
       <div>
       {% for label in object.labels.all %}
         <span class="label label-lg" style="background-color: {{label.color}} !important; color: white; padding: 2px">
           {{label.title}}
+      </span>
+      {% endfor %}
+      <div></div>
+    </div>
+    <hr/>
+
+    <hr/>
+    <div>
+      <a href="assign_user/">
+        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+        &nbsp;&nbsp;&nbsp;
+        <strong>Assignees</strong>
+      </a>
+      <div>
+      {% for user in object.assignees.all %}
+        <span class="label label-lg" style="background-color: {{label.color}} !important; color: white; padding: 2px">
+          {{user.username}}
       </span>
       {% endfor %}
       <div></div>
