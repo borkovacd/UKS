@@ -78,7 +78,7 @@ urlpatterns = [
     path('problem/<int:problem_id>/apply_label/', set_label_view, name='set_label_view'),
     path('problem/<int:problem_id>/apply_label/<int:label_id>/apply/', apply_label, name='apply_label'),
     path('problem/<int:problem_id>/assign_user/', assign_user_view, name='assign_user_view'),
-    path('problem/<int:problem_id>/assign_user_view/<int:user_id>/assign/', assign_user, name='assign_user'),
+    path('problem/<int:problem_id>/assign_user/<str:username>/assign/', assign_user, name='assign_user'),
 
     path('labels', LabelListView.as_view(), name='labels'),
     path('label/<int:pk>/', LabelDetailView.as_view(), name='label-detail'),

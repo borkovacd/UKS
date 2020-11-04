@@ -305,11 +305,15 @@ def assign_user_view(request, problem_id):
     return render(request, 'project/assign_user.html', {'problem': problem, 'users': notAssignedUsers})
 
 @login_required
-def assign_user(request, problem_id, user_id):
+def assign_user(request, problem_id, username):
     problem = get_object_or_404(Problem, pk=problem_id)
-    user = get_object_or_404(User, pk=user_id)
-    problem.assignees.add(user)
-    problem.save()
+    users = User.objects.all()
+
+    for temp_user in users:
+        if temp_user.username == username:
+            problem.assignees.add(temp_user)
+            problem.save()
+
     pk = problem_id
     return redirect(reverse('problem-detail', args=[pk]))
 

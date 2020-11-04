@@ -17,7 +17,7 @@
   {% for user in problem.assignees.all %}
     <article class="media content-section" style="padding: 0px; border-radius: 2px;">
       <div class="media-body" style="background-color: {{temp_label.color}} !important; color: white;">
-        <h2><a class="article-title" style="color: white;" href="{% url 'user-detail' user.id %}">{{ user.username }}</a></h2>
+        <h2> {{ user.username }} </h2>
         <span class="col-xs-1">
           <h3 class="text-success" style="color: white">Assigned</h3>
         </span>
@@ -29,7 +29,7 @@
       <article class="media content-section" style="padding: 0px; border-radius: 2px;">
         <div class="media-body" style="background-color: {{label.color}} !important; color: white;">
           <h2>{{ user.user.username }}</h2>
-          <h3><a class=" btn btn-success" style="color: white" href="/problem/{{problem.id}}/assign_user/{{user.id}}/assign">Assign
+          <h3><a class=" btn btn-success" style="color: white" href="/problem/{{problem.id}}/assign_user/{{user.user.username}}/assign">Assign
           </a></h3>
         </div>
     </article>
