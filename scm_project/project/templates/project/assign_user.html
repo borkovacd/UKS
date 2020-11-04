@@ -11,31 +11,31 @@
 
   <hr />
   <br/>
-  <h4>Assign user to the problem</h4>
-  <br />
+  <h2><i>Assignees<i></h2>
 
   {% for user in problem.assignees.all %}
-    <article class="media content-section" style="padding: 0px; border-radius: 2px;">
-      <div class="media-body" style="background-color: {{temp_label.color}} !important; color: white;">
-        <h2> {{ user.username }} </h2>
-        <span class="col-xs-1">
-          <h3 class="text-success" style="color: white">Assigned</h3>
-        </span>
-      </div>
-    </article>
+   <div class="mt-4">
+    <span class="badge badge-success mt-2 mb-2" style="font-size: x-large;">
+          {{user.username}}
+      </span>
+      <span>
+        <a class="glyphicon glyphicon-remove-sign" style="color: red; font-size: xx-large;">
+        </a>
+      </span>
+    </div>
   {% endfor %}
 
   {% for user in users %}
-      <article class="media content-section" style="padding: 0px; border-radius: 2px;">
-        <div class="media-body" style="background-color: {{label.color}} !important; color: white;">
-          <h2>{{ user.username }}</h2>
-          <h3><a class=" btn btn-success" style="color: white" href="/problem/{{problem.id}}/assign_user/{{user.username}}/assign">Assign
-          </a></h3>
-        </div>
-    </article>
+   <div class="mt-4">
+  <span class="badge badge-success mt-2 mb-2" style="font-size: x-large;">
+          {{user.username}}
+      </span>
+      <span>
+        <a class="glyphicon glyphicon-plus-sign" style="color: green; font-size: xx-large;" href="/problem/{{problem.id}}/assign_user/{{user.username}}/assign">
+        </a></span>
+      </span>
+</div>
 
-     {% empty %}
-          <p>There are currently no users who can be assigned</p>
 
   {% endfor %}
 
