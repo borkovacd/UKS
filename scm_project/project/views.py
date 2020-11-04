@@ -277,8 +277,12 @@ def apply_label(request, problem_id, label_id):
 def assign_user_view(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     project_collaborators = Collaborator.objects.filter(project=problem.project_id)
-    project = Project.objects.filter(id=problem.project_id)
-    #author = User.objects.filter(id=project.author_id)
+    project = get_object_or_404(Project, pk=problem.project_id)
+
+    users = User.objects.all()
+    for temp_user in users:
+        if temp_user.username == project.author.username:
+            author = temp_user
 
     notAssignedUsers = []
     assignedAlready = False
@@ -288,19 +292,19 @@ def assign_user_view(request, problem_id):
                 assignedAlready = True
 
         if assignedAlready == False:
-            notAssignedUsers.append(temp_collaborator_user)
+            notAssignedUsers.append(temp_collaborator_user.user)
 
         assignedAlready = False
 
-    # assignedAlready = False
-    # for temp_user in problem.assignees.all():
-    #     if author.id == temp_user.id:
-    #         assignedAlready = True
+    assignedAlready = False
+    for temp_user in problem.assignees.all():
+        if author.username == temp_user.username:
+            assignedAlready = True
 
-    #     if assignedAlready == False:
-    #         notAssignedUsers.append(author)
+        if assignedAlready == False:
+            notAssignedUsers.append(author)
 
-    # assignedAlready = False
+    assignedAlready = False
 
     return render(request, 'project/assign_user.html', {'problem': problem, 'users': notAssignedUsers})
 

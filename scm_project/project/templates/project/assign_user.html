@@ -28,8 +28,8 @@
   {% for user in users %}
       <article class="media content-section" style="padding: 0px; border-radius: 2px;">
         <div class="media-body" style="background-color: {{label.color}} !important; color: white;">
-          <h2>{{ user.user.username }}</h2>
-          <h3><a class=" btn btn-success" style="color: white" href="/problem/{{problem.id}}/assign_user/{{user.user.username}}/assign">Assign
+          <h2>{{ user.username }}</h2>
+          <h3><a class=" btn btn-success" style="color: white" href="/problem/{{problem.id}}/assign_user/{{user.username}}/assign">Assign
           </a></h3>
         </div>
     </article>

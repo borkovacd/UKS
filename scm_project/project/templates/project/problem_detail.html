@@ -47,13 +47,13 @@
     <hr/>
     <div>
       <a href="apply_label/">
-        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-cog mb-3" aria-hidden="true"></span>
         &nbsp;&nbsp;&nbsp;
         <strong>Labels</strong>
       </a>
       <div>
       {% for label in object.labels.all %}
-        <span class="label label-lg" style="background-color: {{label.color}} !important; color: white; padding: 2px">
+        <span class="label label-lg mr-1" style="background-color: {{label.color}} !important; color: white; padding: 2px">
           {{label.title}}
       </span>
       {% endfor %}
@@ -70,7 +70,7 @@
       </a>
       <div>
       {% for user in object.assignees.all %}
-        <span class="label label-lg" style="background-color: {{label.color}} !important; color: white; padding: 2px">
+        <span class="badge badge-success mt-2" style="font-size: larger">
           {{user.username}}
       </span>
       {% endfor %}
