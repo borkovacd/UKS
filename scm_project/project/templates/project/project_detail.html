@@ -118,7 +118,7 @@
       {% for label in labels %}
         <article class="media content-section">
           <div class="media-body">
-            <h5><a class="article-title" style="color: {{label.color}}" href="{% url 'label-detail' label.id %}">{{ label.title }}</a></h5>
+            <h5><a class="article-title" style="color: white; background: {{label.color}}" href="{% url 'label-detail' label.id %}">{{ label.title }}</a></h5>
             <p class="text-muted">
               <a href="{% url 'label-update' label.id %}">Edit</a>
               <a href="{% url 'label-delete' label.id %}">Delete</a>

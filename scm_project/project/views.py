@@ -238,6 +238,15 @@ def link_milestone(request, problem_id, milestone_id):
     return redirect(reverse('problem-detail', args=[pk]))
 
 @login_required
+def unlink_milestone(request, problem_id, milestone_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    milestone = get_object_or_404(Milestone, pk=milestone_id)
+    problem.milestone = None
+    problem.save()
+    pk = problem_id
+    return redirect(reverse('problem-detail', args=[pk]))   
+
+@login_required
 def set_label_view(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     project_labels = Label.objects.filter(project=problem.project_id)
@@ -336,7 +345,14 @@ class LabelDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['problems'] = Problem.objects.filter(project_id = self.object.project_id)
+        problems = Problem.objects.filter(project_id = self.object.project_id)
+        labelProblems = []
+        for problem in problems:
+            for label in problem.labels.all():
+                if label.id == self.object.id:
+                    labelProblems.append(problem)
+
+        context['problems'] = labelProblems            
         return context
 
 class LabelListView(ListView):
