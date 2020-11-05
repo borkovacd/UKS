@@ -1,0 +1,21 @@
+sudo: required
+language: python
+python:
+  - "3.6"
+
+services:
+  - docker
+
+before_script: pip install docker-compose 
+install:
+  - pip install -r requirements.txt
+
+script:
+  - docker-compose run app sh -c "python manage.py test"
+#script:
+#  - python3 manage.py test
+#  - docker build -t $DOCKER_USERNAME/uks:latest .
+
+#after_success:
+#  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+#  - docker push $DOCKER_USERNAME/uks:latest
