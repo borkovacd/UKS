@@ -13,9 +13,6 @@ install:
 script:
   - docker-compose run scm_project sh -c "python manage.py test"
   - docker build -t olgasavic96/uks:latest .
-#script:
-#  - python3 manage.py test
-#  - docker build -t $DOCKER_USERNAME/uks:latest .
 
 after_success:
   - docker login -u "olgasavic96" -p "OlgaSavic1234";
