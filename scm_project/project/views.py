@@ -64,7 +64,6 @@ class ProjectDetailView(DetailView):
         context['closed_problems'] = Problem.objects.filter(project_id = self.object, opened = False)
         return context
 
-
 @login_required
 def opened_problems(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
@@ -175,19 +174,12 @@ class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 # PROBLEMS
-"""class ProblemCreateView(LoginRequiredMixin, CreateView):
-    model = Problem
-    fields = ['title', 'description', 'project']
-
-    def form_valid(self, form):
-        form.instance.reported_by = self.request.user
-        return super().form_valid(form)
-"""
+@login_required
 def addProblem(request, pk):
     form = ProblemForm(request.POST)
     """milestone = Milestone.objects.filter(project_id = pk).values_list('title', 'description')
-                form.fields['milestone'].queryset = milestone
-            """
+       form.fields['milestone'].queryset = milestone
+    """
     form.fields['milestone'].queryset = Milestone.objects.filter(project_id = pk)
     if request.method == 'POST':
         if form.is_valid():
@@ -200,7 +192,6 @@ def addProblem(request, pk):
     return render(request, 'project/problem_form.html', {'form': form})
 
 
-# parameters -> request, project_id, problem_id
 @login_required
 def close_problem(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
@@ -212,7 +203,6 @@ def close_problem(request, problem_id):
     pk = problem_id
     return redirect(reverse('problem-detail', args=[pk]))
 
-# parameters -> request, project_id, problem_id
 @login_required
 def open_problem(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
@@ -361,6 +351,9 @@ class ProblemListView(ListView):
     context_object_name = 'problems'
     ordering = ['title']
 
+    def get_queryset(self):
+        return Problem.objects.all()
+
 class ProblemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Problem
     success_url = '/'
@@ -372,10 +365,6 @@ class ProblemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return False
 
 # LABELS
-"""class LabelCreateView(LoginRequiredMixin, CreateView):
-    model = Label
-    fields = ['title', 'color', 'project']
-"""
 def addLabel(request, pk):
     form = LabelForm(request.POST)
     if request.method == 'POST':
@@ -433,11 +422,7 @@ class MilestoneDetailView(DetailView):
         context['problems'] = Problem.objects.filter(milestone_id = self.object)
         return context
 
-
-"""class MilestoneCreateView(LoginRequiredMixin, CreateView):
-    model = Milestone
-    form_class = MilestoneForm"""
-
+@login_required
 def addMilestone(request, pk):
     form = MilestoneForm(request.POST)
     if request.method == 'POST':
@@ -458,7 +443,6 @@ class MilestoneDeleteView(LoginRequiredMixin, DeleteView):
     model = Milestone
     success_url = '/'
 
-# parameters -> request, project_id, problem_id
 @login_required
 def close_milestone(request, milestone_id):
     milestone = get_object_or_404(Milestone, pk=milestone_id)
