@@ -11,11 +11,12 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - docker-compose run app sh -c "python manage.py test"
+  - docker-compose run scm_project sh -c "python manage.py test"
+  - docker build -t olgasavic96/uks:latest .
 #script:
 #  - python3 manage.py test
 #  - docker build -t $DOCKER_USERNAME/uks:latest .
 
-#after_success:
-#  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-#  - docker push $DOCKER_USERNAME/uks:latest
+after_success:
+  - docker login -u "olgasavic96" -p "OlgaSavic1234";
+  - docker push olgasavic96/uks:latest
