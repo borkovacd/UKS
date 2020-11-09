@@ -1,0 +1,108 @@
+@startuml
+class Project {
+        title: string
+        git_repository: string
+        date_created: timestamp
+        author: User
+}
+
+Project "0..*" -- "0..*" User : collaborators
+
+class Milestone {
+        title: string
+        description: string
+        due_date: timestamp
+        date_created: timestamp
+        date_closed: timestamp
+        opened: boolean
+        project: Project
+}
+
+Project *-- "0..*" Milestone
+
+class Problem {
+        title: string
+        description: string
+        project: Project
+        reported_by: User
+        closed_by: User
+        created_time: timestamp
+        date_closed: timestamp
+        opened: boolean
+        milestone: Milestone
+
+}
+
+Project *-- "0..*" Problem
+Problem "0..1" -- "*" Problem : base_problem
+
+
+class Label {
+        title: string
+        color: string
+        description: string
+        project: Project
+}
+
+Problem "0..*" -- "0..*" Label
+
+class Comment {
+        text: string
+}
+
+Problem *-- "0..*" Comment
+
+class User {
+        email: Email
+        username: string
+        password: string
+}
+
+class Profile {
+        user: User
+        image: string
+}
+User *-- "1" Profile
+
+class Custom_Event {
+      created_time: timestamp
+      creator: User
+      problem: Problem
+}
+
+Problem *-- "0..*" Custom_Event
+
+class Change_State {
+        opened: boolean
+}
+
+class Change_Milestone {
+        milestone: Milestone
+
+}
+
+class Change_Code {
+        url: URL
+}
+
+class Change_Comment {
+        comment: Comment
+}
+
+class Change_Assignee {
+        assignee: User
+}
+
+class Change_Label {
+       label: Label
+}
+
+
+
+Custom_Event <|-- Change_State
+Custom_Event <|-- Change_Milestone
+Custom_Event <|-- Change_Code
+Custom_Event <|-- Change_Assignee
+Custom_Event <|-- Change_Comment
+Custom_Event <|-- Change_Label
+@enduml

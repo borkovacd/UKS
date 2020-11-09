@@ -88,15 +88,4 @@ class Custom_Event(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE, null=True)
 
-class Change_State(Custom_Event):
-    current_state = models.CharField(
-      max_length=2,
-      choices=[(tag, tag.value) for tag in Problem_State]
-    )
 
-    @classmethod
-    def create(cls, creator, state, problem):
-        created_time = datetime.now()
-        new_state = cls(creator=creator, problem=problem, current_state=state, created_time=created_time)
-        new_state.save()
-        return new_state
