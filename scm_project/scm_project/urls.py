@@ -71,6 +71,7 @@ urlpatterns = [
     path('problem/<int:pk>/', ProblemDetailView.as_view(), name='problem-detail'),
     path('problems', ProblemListView.as_view(), name='problems'),
     path('problem/<int:pk>/delete/', ProblemDeleteView.as_view(), name='problem-delete'),
+    path('problem/<int:pk>/update/', ProblemUpdateView.as_view(), name='problem-update'),
     path('problem/<int:problem_id>/close/', close_problem, name='close_problem'),
     path('problem/<int:problem_id>/open/', open_problem, name='open_problem'),
     path('problem/<int:problem_id>/set_milestone/', set_milestone_view, name='set_milestone_view'),

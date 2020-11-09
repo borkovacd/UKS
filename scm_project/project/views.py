@@ -354,6 +354,10 @@ class ProblemListView(ListView):
     def get_queryset(self):
         return Problem.objects.all()
 
+class ProblemUpdateView(LoginRequiredMixin, UpdateView):
+    model = Problem
+    form_class = ProblemForm        
+
 class ProblemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Problem
     success_url = '/'
