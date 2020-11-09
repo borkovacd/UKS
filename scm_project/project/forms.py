@@ -28,6 +28,11 @@ class ProblemForm(forms.ModelForm):
         model = Problem
         fields = ['title', 'description', 'milestone']
 
+class ProblemUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Problem
+        fields = ['title', 'description']        
+
 class LabelForm(forms.ModelForm):
     class Meta:
         model = Label

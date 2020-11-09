@@ -27,7 +27,7 @@ from .models import (
                     Collaborator
                     )
 
-from .forms import MilestoneForm, AddCollaboratorForm, ProblemForm, LabelForm, CommentForm
+from .forms import MilestoneForm, AddCollaboratorForm, ProblemForm, LabelForm, CommentForm, ProblemUpdateForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.views.generic.edit import FormMixin
@@ -356,7 +356,8 @@ class ProblemListView(ListView):
 
 class ProblemUpdateView(LoginRequiredMixin, UpdateView):
     model = Problem
-    form_class = ProblemForm        
+    form_class = ProblemUpdateForm     
+
 
 class ProblemDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Problem
