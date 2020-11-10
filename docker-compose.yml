@@ -6,9 +6,8 @@ services:
     #  context: .
     image: olgasavic96/uks:latest
     ports:
-      - "8000:8000"
+      - "5000:5000"
     volumes:
       - ./scm_project:/scm_project
-    command: python manage.py runserver 0.0.0.0:8000
         
   
