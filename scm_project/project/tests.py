@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from project.models import Project, Problem, Milestone, Label
+from project.models import Project, Problem, Milestone, Label, Comment
 from datetime import datetime
 from django.utils import timezone
 from django.urls import reverse
@@ -117,6 +117,58 @@ class ModelTests(TestCase):
     	self.assertEqual(response.status_code, 302)
     	problem.refresh_from_db()
     	self.assertEqual(problem.milestone, None)
+
+
+    def test_apply_label(self):
+        problem = Problem.objects.create(title="Problem1", description="Problem1 description test", 
+            project=self.project, reported_by=self.user)
+        label = Label.objects.create(title="Test label", description="Description test label",
+            project=self.project, color = self.color)
+        response = self.client.post(reverse('apply_label', 
+            kwargs={'problem_id': problem.id, 'label_id': label.id}))
+        self.assertIn(label, problem.labels.all())
+
+    def test_remove_label(self):
+        problem = Problem.objects.create(title="Problem1", description="Problem1 description test", 
+            project=self.project, reported_by=self.user)
+        label = Label.objects.create(title="Test label", description="Description test label",
+            project=self.project, color = self.color)
+        response = self.client.post(reverse('remove_label', 
+            kwargs={'problem_id': problem.id, 'label_id': label.id}))
+        self.assertNotIn(label, problem.labels.all())  
+
+    def test_assign_user(self):
+        user = User.objects.create_user(username='newUser2', email='newUser2@test.com', password='testing321')
+        problem = Problem.objects.create(title="Problem1", description="Problem1 description test", 
+            project=self.project, reported_by=self.user)
+        response = self.client.post(reverse('assign_user', 
+            kwargs={'problem_id': problem.id, 'username': user.username}))
+        self.assertIn(user, problem.assignees.all()) 
+
+    def test_remove_user(self):
+        user = User.objects.create_user(username='newUser2', email='newUser2@test.com', password='testing321')
+        problem = Problem.objects.create(title="Problem1", description="Problem1 description test", 
+            project=self.project, reported_by=self.user)
+        response = self.client.post(reverse('remove_user', 
+            kwargs={'problem_id': problem.id, 'username': user.username}))
+        self.assertNotIn(user, problem.assignees.all())   
+
+    def test_delete_comment(self):
+        comment = Comment.objects.create(text='This is my first comment')
+        response = self.client.delete(reverse('delete_comment', 
+            kwargs={'problem_id': self.problem.id, 'comment_id':comment.id}))
+        self.assertEqual(response.status_code, 302) 
+        count = Comment.objects.filter(id=comment.id).count()
+        self.assertEqual(count, 0)     
+
+    def test_update_comment(self):
+        comment = Comment.objects.create(text='This is my first comment')
+        response=self.client.post(reverse('update_comment', 
+            kwargs={'problem_id': self.problem.id, 'comment_id':comment.id}), 
+        {'text':'Updated comment text'})
+        self.assertEqual(response.status_code, 302)
+        comment.refresh_from_db()
+        self.assertEqual(comment.text, 'Updated comment text')           
 
     		
 		
