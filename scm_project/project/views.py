@@ -320,6 +320,18 @@ def assign_user(request, problem_id, username):
     pk = problem_id
     return redirect(reverse('problem-detail', args=[pk]))
 
+@login_required
+def remove_user(request, problem_id, username):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    users = User.objects.all()
+
+    for temp_user in users:
+        if temp_user.username == username:
+            problem.assignees.remove(temp_user)
+            problem.save()
+
+    pk = problem_id
+    return redirect(reverse('problem-detail', args=[pk]))   
 
 class ProblemDetailView(FormMixin, DetailView):
     model = Problem
