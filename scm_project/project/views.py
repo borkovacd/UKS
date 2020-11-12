@@ -264,6 +264,15 @@ def apply_label(request, problem_id, label_id):
     return redirect(reverse('problem-detail', args=[pk]))
 
 @login_required
+def remove_label(request, problem_id, label_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    label = get_object_or_404(Label, pk=label_id)
+    problem.labels.remove(label)
+    problem.save()
+    pk = problem_id
+    return redirect(reverse('problem-detail', args=[pk]))
+
+@login_required
 def assign_user_view(request, problem_id):
     problem = get_object_or_404(Problem, pk=problem_id)
     project_collaborators = Collaborator.objects.filter(project=problem.project_id)

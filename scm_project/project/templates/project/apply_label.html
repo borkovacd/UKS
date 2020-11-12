@@ -20,7 +20,7 @@
          <a  style="color: white;" href="{% url 'label-detail' temp_label.id %}">{{ temp_label.title }}</a>
       </span>
       <span>
-        <a class="glyphicon glyphicon-remove-sign" style="color: red; font-size: x-large;">
+        <a class="glyphicon glyphicon-remove-sign" style="color: red; font-size: x-large;" href="/problem/{{problem.id}}/apply_label/{{temp_label.id}}/remove">
         </a>
       </span>
         <h4 class="ml-3 mt-2">
