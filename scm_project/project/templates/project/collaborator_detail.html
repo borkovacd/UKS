@@ -1,15 +1,16 @@
 {% extends "project/base.html" %}
 {% block content %}
+  <legend class="border-bottom mb-4">Collaborator details</legend>
   <article class="media content-section">
     <div class="media-body">
       <div class="article-metadata">
-          <div>
-            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'collaborator-delete' object.id %}">Delete</a>
-          </div>
       </div>
       <h3>
-        {{object.user.username}}
-    </h3>
+        <u>Username</u>: {{object.user.username}}
+      </h3>
+      <h3>
+        <u>Email</u>: {{object.user.email}}
+      </h3>
     </div>
   </article>
 {% endblock content %}

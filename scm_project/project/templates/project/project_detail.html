@@ -143,6 +143,10 @@
           <div class="media-body">
             <h5><a class="article-title" href="{% url 'collaborator-detail' collaborator.id %}">{{ collaborator.user.username }}</a></h5>
           </div>
+                <span>
+        <a class="glyphicon glyphicon-remove-sign" style="color: red; font-size: x-large;" href="{% url 'collaborator-delete' collaborator.id %}">
+        </a>
+      </span>
         </article>
     {% empty %}
           <p>There are currently no collaborators attached to this project.</p>    
