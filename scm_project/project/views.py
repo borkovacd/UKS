@@ -24,7 +24,8 @@ from .models import (
                     Problem,
                     Label,
                     Milestone,
-                    Collaborator
+                    Collaborator,
+                    Comment
                     )
 
 from .forms import MilestoneForm, AddCollaboratorForm, ProblemForm, LabelForm, CommentForm, ProblemUpdateForm
@@ -341,13 +342,6 @@ class ProblemDetailView(FormMixin, DetailView):
     def get_success_url(self):
         return reverse_lazy('problem-detail', kwargs={'pk': self.object.pk})
 
-    # def get_object(self):
-    #     try:
-    #         my_object = User.objects.get(id=self.kwargs.get('pk'))
-    #         return my_object
-    #     except self.model.DoesNotExist:
-    #         raise Http404("No MyModel matches the given query.")
-
     def get_context_data(self, *args, **kwargs):
         context = super(ProblemDetailView, self).get_context_data(*args, **kwargs)
         comment = self.get_object()
@@ -364,6 +358,34 @@ class ProblemDetailView(FormMixin, DetailView):
         problem.comments.add(comment)
         problem.save()
         return super(ProblemDetailView, self).form_valid(form)
+
+@login_required
+def delete_comment(request, problem_id, comment_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    comment = get_object_or_404(Comment, pk=comment_id)
+    current_user = request.user
+    comment.delete()
+    problem.save()
+    pk = problem_id
+    return redirect(reverse('problem-detail', args=[pk]))
+
+@login_required
+def update_comment(request, problem_id, comment_id):
+    problem = get_object_or_404(Problem, pk=problem_id)
+    comment = get_object_or_404(Comment, pk = comment_id)
+    form = CommentForm(instance = comment)
+
+    if request.method == "POST":
+        form = CommentForm(request.POST or None,instance=comment)
+        if form.is_valid():
+            comment = form.save()
+            current_user = request.user
+            comment.save()
+            pk = problem_id
+            return redirect(reverse('problem-detail', args=[pk]))    
+        else:
+            form = CommentForm(instance = comment)
+    return render(request,'project/update_comment.html', {'form':form})   
 
 
 class ProblemListView(ListView):

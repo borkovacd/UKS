@@ -83,7 +83,8 @@ urlpatterns = [
     path('problem/<int:problem_id>/assign_user/', assign_user_view, name='assign_user_view'),
     path('problem/<int:problem_id>/assign_user/<str:username>/assign/', assign_user, name='assign_user'),
     path('problem/<int:problem_id>/assign_user/<str:username>/remove/', remove_user, name='remove_user'),
-
+    path('problem/<int:problem_id>/update_comment/<int:comment_id>/', update_comment, name='update_comment'),
+    path('problem/<int:problem_id>/delete_comment/<int:comment_id>/', delete_comment, name='delete_comment'),
 
     path('labels', LabelListView.as_view(), name='labels'),
     path('label/<int:pk>/', LabelDetailView.as_view(), name='label-detail'),
