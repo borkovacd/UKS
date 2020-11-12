@@ -51,6 +51,17 @@ class ProjectListView(ListView):
     context_object_name = 'projects'
     ordering = ['title']
 
+@login_required
+def collaborations(request):
+    try:
+        collaborator = Collaborator.objects.get(user_id=request.user.id)
+    except Collaborator.DoesNotExist:
+        return render(request, 'project/collaboration_projects.html')
+    context = {
+        'project': collaborator.project
+    }
+    return render(request, 'project/collaboration_projects.html', context)     
+
 class ProjectDetailView(DetailView):
     model = Project
 
@@ -512,10 +523,6 @@ def open_milestone(request, milestone_id):
     return redirect(reverse('milestone-detail', args=[pk]))
 
 # COLLABORATORS
-
-# class AddCollaboratorView(LoginRequiredMixin, CreateView):
-#     model = Collaborator
-#     fields = ['user']
 
 def addCollaborator(request, pk):
     form = AddCollaboratorForm(request.POST)

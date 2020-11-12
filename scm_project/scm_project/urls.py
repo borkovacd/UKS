@@ -58,6 +58,7 @@ urlpatterns = [
     path('projects', ProjectListView.as_view(), name='home'),
     path('list_projects', home, name='list_projects'),
     path('', ProjectListView.as_view(), name='home'),
+    path('collaborations/', collaborations, name='collaborations'),    
     path('project/<int:pk>/', ProjectDetailView.as_view(), name='project-detail'),
     path('project/new/', ProjectCreateView.as_view(), name='project-create'),
     path('project/<int:pk>/update/', ProjectUpdateView.as_view(), name='project-update'),
@@ -101,9 +102,7 @@ urlpatterns = [
     path('milestone/<int:milestone_id>/open/', open_milestone, name='open_milestone'),
 
     path('collaborators', CollaboratorListView.as_view(), name='collaborators'),
-    #path('project/<int:pk>/collaborate/', AddCollaboratorView.as_view(), name='project-collaborate'),
     path('project/<int:pk>/collaborate/', project_views.addCollaborator, name='project-collaborate'),
-    #path('collaborator/add/', AddCollaboratorView.as_view(), name='collaborator-add'),
     path('collaborator/<int:pk>/', CollaboratorDetailView.as_view(), name='collaborator-detail'),
     path('collaborator/<int:pk>/delete/', CollaboratorDeleteView.as_view(), name='collaborator-delete'),
 
