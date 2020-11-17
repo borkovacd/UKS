@@ -1,0 +1,19 @@
+{% extends "project/base.html" %}
+{% block content %}
+    {% for project in projects %}
+    	{% if project.author == user %}
+        <h1><b> My repositories </b></h1> 
+        <br>
+  
+        <article class="media content-section">
+          <div class="media-body">
+            <h2><a class="article-title" href="{% url 'project-detail' project.id %}">{{ project.title }}</a></h2>
+            <a class="article-title" href="{{ project.git_repository }}">{{ project.git_repository }}</a>
+          </div>
+        </article>
+        {% endif %}
+    {% empty %}
+        <br>
+        <p>There are currently no repositories.</p>        
+    {% endfor %}
+{% endblock content %}

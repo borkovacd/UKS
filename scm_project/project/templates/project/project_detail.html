@@ -1,0 +1,159 @@
+{% extends "project/base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <!--<img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}"> -->
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="#">{{ object.author }}</a>
+        <small class="text-muted">{{ object.date_created|date:"F d, Y" }}</small>
+        {% if object.author == user %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'project-update' object.id %}">Edit</a>
+            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'project-delete' object.id %}">Delete</a>
+          </div>
+        {% endif %}
+      </div>
+      <h2 class="article-title">{{ object.title }}</h2>
+      <a class="article-title" href="{{ object.git_repository }}">{{ object.git_repository }}</a>
+
+       <!-- Nav tabs -->
+       <div>
+       <br/>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#problems">Problems</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#milestones">Milestones</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#labels">Labels</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#collaborators">Collaborators</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane container active" id="problems">
+      <br>
+          <a href="/project/{{object.id}}/problems-opened/">
+            <button type="button" name = "opened" value="opened" class="btn btn-light">opened</button>
+          </a>
+          <a href="/project/{{object.id}}/problems-closed/">
+            <button type="button" name = "closed" value="closed" class="btn btn-light">closed</button>
+          </a>  
+         
+      <br>
+      <a class="btn btn-success btn-sm mt-1 mb-1" href="{% url 'problem-create' object.id %}">Add problem</a>
+      {% for problem in problems %}
+        <article class="media content-section">
+          <div class="media-body">
+            <span style="margin-right: 15px;">
+              {% if problem.opened  %}
+                <span class="glyphicon glyphicon-ok-circle" style="color: green;"></span>
+              {% else %}
+                <span class="glyphicon glyphicon-remove-circle" style="color: red;"></span>
+              {% endif %}
+            </span>
+            <h2><a class="article-title" href="{% url 'problem-detail' problem.id %}">{{ problem.title }}</a></h2>
+            <p class="text-muted">
+                  #{{problem.id}} opened {{problem.created_time|date:"F d, Y"}} by {{problem.reported_by}}
+                {% if problem.opened == False %}
+                  <br>
+                  #{{problem.id}} closed {{problem.date_closed|date:"F d, Y"}} by {{problem.closed_by}}
+                {% endif %}
+            </p>  
+          </div>
+        </article>
+    {% empty %}
+          <p>There are currently no problems attached to this project.</p>
+    {% endfor %}
+    </div>
+
+
+
+    <div class="tab-pane container fade" id="milestones">
+      <br>
+          <a href="/project/{{object.id}}/milestones-opened/">
+            <button type="button" name = "opened" value="opened" class="btn btn-light">opened</button>
+          </a>
+          <a href="/project/{{object.id}}/milestones-closed/">
+            <button type="button" name = "closed" value="closed" class="btn btn-light">closed</button>
+          </a>        
+      
+      <br>
+      <a class="btn btn-success btn-sm mt-1 mb-1" href="{% url 'milestone-create' object.id %}">Add milestone</a>
+      {% for milestone in milestones %}
+        <article class="media content-section">
+          <!--<img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+          <div class="media-body">
+            <h2><a class="article-title" href="{% url 'milestone-detail' milestone.id %}">{{ milestone.title }}</a></h2>
+            <p class="text-muted">
+                <span class="glyphicon glyphicon-calendar"></span>              
+                  <strong style="margin-right: 15px">due date {{milestone.due_date|date:"F d, Y"}}</strong>
+                <span class="glyphicon glyphicon-time"></span>
+                {% if milestone.opened %}
+                  opened {{milestone.date_created|date:"F d, Y"}}
+                {% else %}
+                  closed {{milestone.date_closed|date:"F d, Y"}}
+                {% endif %}  
+              </p>
+              <h5 class="text-muted">
+                {{milestone.description}}
+              </h5>
+          </div>
+        </article>
+       {% empty %}
+          <p>There are currently no milestones attached to this project.</p>
+    {% endfor %}
+    </div>
+
+
+
+    <div class="tab-pane container fade" id="labels">
+      <br>
+      <a class="btn btn-success btn-sm mt-1 mb-1" href="{% url 'label-create' object.id %}">Add label</a>
+      {% for label in labels %}
+        <article class="media content-section">
+          <div class="media-body">
+            <h5><a class="article-title" style="color: white; background: {{label.color}}" href="{% url 'label-detail' label.id %}">{{ label.title }}</a></h5>
+            <p class="text-muted">
+              <a href="{% url 'label-update' label.id %}">Edit</a>
+              <a href="{% url 'label-delete' label.id %}">Delete</a>
+            </p>
+          </div>
+          <h5 class="text-muted">
+                {{label.description}}
+          </h5>
+        </article>
+    {% empty %}
+          <p>There are currently no labels attached to this project.</p>    
+    {% endfor %}
+    </div>
+
+
+
+    <div class="tab-pane container fade" id="collaborators">
+      <br>
+      <a class="btn btn-success btn-sm mt-1 mb-1" href="{% url 'project-collaborate' object.id %}">Add collaborator</a>    
+      {% for collaborator in collaborators %}
+        <article class="media content-section">
+          <div class="media-body">
+            <h5><a class="article-title" href="{% url 'collaborator-detail' collaborator.id %}">{{ collaborator.user.username }}</a></h5>
+          </div>
+                <span>
+        <a class="glyphicon glyphicon-remove-sign" style="color: red; font-size: x-large;" href="{% url 'collaborator-delete' collaborator.id %}">
+        </a>
+      </span>
+        </article>
+    {% empty %}
+          <p>There are currently no collaborators attached to this project.</p>    
+    {% endfor %}
+    </div>
+  </div>
+  </div>
+    </div>
+  </article>
+{% endblock content %}

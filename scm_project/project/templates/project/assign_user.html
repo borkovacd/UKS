@@ -1,0 +1,47 @@
+{% extends "project/base.html" %}
+{% block content %}
+
+          <div class="media-body">
+            <u>Problem title </u>
+            <h2><a class="article-title" href="{% url 'problem-detail' problem.id %}">{{ problem.title }}</a></h2>
+          <p class="text-muted">
+                  #{{problem.id}} opened {{problem.created_time|date:"F d, Y"}} by {{problem.reported_by}}
+          </p>
+          </div>
+
+  <hr />
+  <br/>
+  <h2><i>Assignees<i></h2>
+
+  {% for user in problem.assignees.all %}
+   <div class="mt-4">
+    <span class="badge badge-success mt-2 mb-2" style="font-size: x-large;">
+          {{user.username}}
+      </span>
+      <span>
+        <a class="glyphicon glyphicon-remove-sign" style="color: red; font-size: xx-large;"  href="/problem/{{problem.id}}/assign_user/{{user.username}}/remove">
+        </a>
+      </span>
+    </div>
+  {% endfor %}
+
+  {% for user in users %}
+   <div class="mt-4">
+  <span class="badge badge-success mt-2 mb-2" style="font-size: x-large;">
+          {{user.username}}
+      </span>
+      <span>
+        <a class="glyphicon glyphicon-plus-sign" style="color: green; font-size: xx-large;" href="/problem/{{problem.id}}/assign_user/{{user.username}}/assign">
+        </a></span>
+      </span>
+</div>
+
+
+  {% endfor %}
+
+
+{% endblock content %}
+
+
+
+

@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath scm_project scm_project.wsgi

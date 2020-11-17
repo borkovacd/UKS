@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  scm_project:
+    #build:
+    #  context: .
+    image: olgasavic96/uks:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./scm_project:/scm_project
+        
+  

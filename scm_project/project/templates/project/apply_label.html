@@ -1,0 +1,58 @@
+{% extends "project/base.html" %}
+{% block content %}
+
+          <div class="media-body">
+            <u>Problem title </u>
+            <h2><a class="article-title" href="{% url 'problem-detail' problem.id %}">{{ problem.title }}</a></h2>
+          <p class="text-muted">
+                  #{{problem.id}} opened {{problem.created_time|date:"F d, Y"}} by {{problem.reported_by}}
+          </p>
+          </div>
+
+  <hr />
+  <br/>
+  <h2 class="ml-3"><i>Labels:<i></h2>
+
+
+  {% for temp_label in problem.labels.all %}
+    <div class="mt-4">
+      <span class="label label-lg mr-1 rounded-pill" style="background-color: {{temp_label.color}} !important; font-size: x-large; color: white; padding: 5px">
+         <a  style="color: white;" href="{% url 'label-detail' temp_label.id %}">{{ temp_label.title }}</a>
+      </span>
+      <span>
+        <a class="glyphicon glyphicon-remove-sign" style="color: red; font-size: x-large;" href="/problem/{{problem.id}}/apply_label/{{temp_label.id}}/remove">
+        </a>
+      </span>
+        <h4 class="ml-3 mt-2">
+          <i>Description:</i> {{temp_label.description}}
+        </h4>
+    </div>
+  {% endfor %}
+
+  {% for label in differentLabels %}
+    <div class="mt-4">
+      <span class="label label-lg mr-2 rounded-pill" style="background-color: {{label.color}} !important; font-size: x-large; color: white; padding: 5px">
+         <a  style="color: white;" href="{% url 'label-detail' label.id %}">{{ label.title }}</a>
+      </span>
+      <span>
+        <a class="glyphicon glyphicon-plus-sign" style="color: green; font-size: x-large;" href="/problem/{{problem.id}}/apply_label/{{label.id}}/apply">
+      </a></span>
+
+        <h4 class="ml-3 mt-2">
+          <i>Description:</i> {{label.description}}
+        </h4>
+
+
+    </div>
+
+
+
+
+  {% endfor %}
+
+
+{% endblock content %}
+
+
+
+
